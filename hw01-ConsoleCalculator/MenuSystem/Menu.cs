@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MenuSystem.Enum;
 
 namespace MenuSystem
@@ -17,17 +18,29 @@ namespace MenuSystem
         }
         public string Run()
         {
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine(OutputMenu(_menuItems));
+
+            var isInputValid = false;
+            var userChoice = "";
+            do
+            {
+                AddPredefinedOptions();
+
+                Console.WriteLine(OutputMenu(_menuItems));
+                Console.Write("Your choice: ");
+                userChoice = Console.ReadLine()?.Trim().ToUpper() ?? "";
+                isInputValid = _menuItems.Any(x => x.UserChoiceCharacter == userChoice);
+                if (isInputValid)
+                {
+                    _menuItems.First(x => x.UserChoiceCharacter == userChoice).MethodToExecute?.Invoke();
+                }
+                else
+                {
+                    Console.WriteLine($"Unknown input \"{userChoice}\". Please try again.");
+                }
+                
+            } while (!isInputValid);
             
-            Console.ForegroundColor = ConsoleColor.DarkGray;
-            var predefinedItems = GetPredefinedOptions();
-            Console.WriteLine(OutputMenu(predefinedItems));
-            Console.ResetColor();
-            Console.WriteLine("Your choice: ");
-            var userChoice = Console.ReadLine()?.Trim().ToLower() ?? "";
-            
-            return "";
+            return userChoice;
         }
 
         private String OutputMenu(List<MenuItem> items)
@@ -35,7 +48,13 @@ namespace MenuSystem
             List<String> menu = new();
             foreach (MenuItem item in items)
             {
-                menu.Add(item.ToString());
+                if (_reservedCharacters.Contains(item.UserChoiceCharacter))
+                {
+                    menu.Add(item.ToString());
+                } else
+                {
+                    menu.Add(item.ToString());
+                }
             }
 
             return String.Join("\n", menu);
@@ -58,25 +77,23 @@ namespace MenuSystem
             _menuItems.Add(item);
         }
 
-        private List<MenuItem> GetPredefinedOptions()
+        private void AddPredefinedOptions()
         {
-            List<MenuItem> items = new();
-
             switch (Level)
             {
                case MenuLevel.Level0:
-                   items.Add(new MenuItem("M", "Main", () => ""));
+                   _menuItems.Add(new MenuItem("X", "Exit", null));
                    break;
                case MenuLevel.Level1:
-                   items.Add(new MenuItem("R", "Return", () => ""));
-                   items.Add(new MenuItem("M", "Main", () => ""));
+                   _menuItems.Add(new MenuItem("M", "Main", () => ""));
+                   _menuItems.Add(new MenuItem("X", "Exit", null));
                    break;
                 case MenuLevel.Level2Plus:
-                    items.Add(new MenuItem("X", "Exit", () => ""));
+                    _menuItems.Add(new MenuItem("R", "Return", () => ""));
+                    _menuItems.Add(new MenuItem("M", "Main", () => ""));
+                    _menuItems.Add(new MenuItem("X", "Exit", null));
                     break;
             }
-            
-            return items;
         }
     }
 }

@@ -7,15 +7,14 @@ namespace MenuSystem
     {
         public virtual string LabelText { get; private set; }
         public virtual string UserChoiceCharacter { get; private set; }
-        public virtual Func<string> MethodToExecute { get; set; } // can not be null. Action is parameter type - no return.
+        public virtual Func<string>? MethodToExecute { get; set; } // can not be null. Action is parameter type - no return.
         
-        public MenuItem(string userChoice, string labelText,  Func<string> methodToExecute)
+        public MenuItem(string userChoice, string labelText,  Func<string>? methodToExecute)
         {
             ValidateConstructorParameters(userChoice, labelText);
-    
-
+            
             LabelText = labelText.Trim();
-            UserChoiceCharacter = userChoice.Trim();
+            UserChoiceCharacter = userChoice.Trim().ToUpper();
             MethodToExecute = methodToExecute;
         }
 
