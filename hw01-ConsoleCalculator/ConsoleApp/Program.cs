@@ -7,17 +7,16 @@ namespace ConsoleApp
 {
     class Program
     {
-
         private static double CalculatorCurrentValue = 0.0;
         static void Main(string[] args)
         {
             // https://gitlab.cs.ttu.ee/rolaur/icd0008-2020f/-/blob/master/hw1-menu/MenuSystem/ConsoleApp/Program.cs
             
             Menu unary = new(MenuLevel.Level1, "---- Level 1 - choose unary operation"); // negate, sqrt, square, abs value  
-            unary.Add(new MenuItem("A", "Negate", () => "")); 
-            unary.Add(new MenuItem("B", "Square root", () => "")); 
-            unary.Add(new MenuItem("C", "Square", () => "")); 
-            unary.Add(new MenuItem("D", "Absolute value", () => ""));   
+            unary.Add(new MenuItem("A", "Negate", Negate)); 
+            unary.Add(new MenuItem("B", "Square root", SquareRoot)); 
+            unary.Add(new MenuItem("C", "Square", Square)); 
+            unary.Add(new MenuItem("D", "Absolute value", Absolute));   
             
             Menu binary = new(MenuLevel.Level1, "---- Level 1 - choose binary operation"); // +, -, /, *, x power y
             binary.Add(new MenuItem("+", "Plus", Plus)); 
@@ -59,7 +58,14 @@ namespace ConsoleApp
             Console.Write($"Calculate: {CalculatorCurrentValue} / ");
             var n = Console.ReadLine()?.Trim();
             double.TryParse(n, out var converted);
-            CalculatorCurrentValue = CalculatorCurrentValue / converted;
+            if (Math.Abs(converted) < 0.000001)
+            {
+                Console.WriteLine($"You can not divide with zero! You entered {n}");
+            }
+            else
+            {
+                CalculatorCurrentValue = CalculatorCurrentValue / converted;
+            }
             Console.WriteLine($"Result: {CalculatorCurrentValue}");
             Thread.Sleep(2000);
             
@@ -87,6 +93,44 @@ namespace ConsoleApp
             Console.WriteLine($"Result: {CalculatorCurrentValue}");
             Thread.Sleep(2000);
             
+            return "";
+        }        
+        
+        public static string Negate()
+        {
+            CalculatorCurrentValue = CalculatorCurrentValue * -1;
+            Console.WriteLine($"Result: {CalculatorCurrentValue}");
+            Thread.Sleep(2000);
+            return "";
+        }
+                
+        public static string Absolute()
+        {
+            CalculatorCurrentValue = Math.Abs(CalculatorCurrentValue);
+            Console.WriteLine($"Result: {CalculatorCurrentValue}");
+            Thread.Sleep(2000);
+            return "";
+        }     
+        
+        public static string SquareRoot()
+        {
+            if (CalculatorCurrentValue >= 0)
+            {
+                CalculatorCurrentValue = Math.Sqrt(CalculatorCurrentValue);
+            }
+            else
+            {
+                Console.WriteLine("You can not take square root out of negative number!");
+            }
+            Console.WriteLine($"Result: {CalculatorCurrentValue}");
+            Thread.Sleep(2000);
+            return "";
+        }
+        public static string Square()
+        {
+            CalculatorCurrentValue = Math.Pow(CalculatorCurrentValue, 2);
+            Console.WriteLine($"Result: {CalculatorCurrentValue}");
+            Thread.Sleep(2000);
             return "";
         }
     }
