@@ -23,37 +23,40 @@ namespace MenuSystem
             Boolean runDone;
             Boolean isInputValid;
             String userChoice;
-            var predefinedOptionsIncluded = false;
+            
             do
             {
-                if (!predefinedOptionsIncluded)
-                {
-                    AddPredefinedOptions();
-                    predefinedOptionsIncluded = true;
-                }
-
+                AddPredefinedOptions();
                 Console.WriteLine(MenuTitle);
                 Console.WriteLine(OutputMenu(_menuItems));
                 Console.Write("Your choice: ");
                 userChoice = Console.ReadLine()?.Trim().ToUpper() ?? "";
                 isInputValid = _menuItems.Any(x => x.UserChoiceCharacter == userChoice);
+                runDone = _menuItems.Any(x => x.UserChoiceCharacter.Equals(userChoice)) && _reservedCharacters.Contains(userChoice);
+                
                 if (isInputValid)
                 {
                     MenuItem item = _menuItems.First(x => x.UserChoiceCharacter == userChoice);
                     userChoice = item.MethodToExecute == null ? userChoice : item.MethodToExecute();
                 }
+                
+                if (userChoice == "X" && isInputValid)
+                { 
+                    if (Level == MenuLevel.Level0)
+                        Console.WriteLine("Closing...");
+                    break;
+                }
 
-                runDone = _menuItems.Any(x => x.UserChoiceCharacter.Equals(userChoice)) && _reservedCharacters.Contains(userChoice);
+                if (userChoice == "M" && isInputValid && Level != MenuLevel.Level0)
+                {
+                    break;
+                }
                 
                 if (!runDone && !isInputValid)
                     Console.WriteLine($"Unknown input \"{userChoice}\". Please try again.");
                 
             } while (!runDone);
-
-            if (runDone && userChoice == "M")
-            {
-                return "";
-            }            
+            
             if (runDone && userChoice == "R")
             {
                 return "";

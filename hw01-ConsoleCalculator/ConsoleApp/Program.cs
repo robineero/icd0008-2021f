@@ -7,11 +7,9 @@ namespace ConsoleApp
 {
     class Program
     {
-        private static double CalculatorCurrentValue = 0.0;
+        private static double _calculatorCurrentValue = 0.0;
         static void Main(string[] args)
         {
-            // https://gitlab.cs.ttu.ee/rolaur/icd0008-2020f/-/blob/master/hw1-menu/MenuSystem/ConsoleApp/Program.cs
-            
             Menu unary = new(MenuLevel.Level1, "---- Level 1 - choose unary operation"); // negate, sqrt, square, abs value  
             unary.Add(new MenuItem("A", "Negate", Negate)); 
             unary.Add(new MenuItem("B", "Square root", SquareRoot)); 
@@ -33,29 +31,29 @@ namespace ConsoleApp
         
         public static string Plus()
         {
-            Console.Write($"Calculate: {CalculatorCurrentValue} + ");
+            Console.Write($"Calculate: {_calculatorCurrentValue} + ");
             var n = Console.ReadLine()?.Trim();
             double.TryParse(n, out var converted);
-            CalculatorCurrentValue = CalculatorCurrentValue + converted;
-            Console.WriteLine($"Result: {CalculatorCurrentValue}");
+            _calculatorCurrentValue = _calculatorCurrentValue + converted;
+            Console.WriteLine($"Result: {_calculatorCurrentValue}");
             Thread.Sleep(2000);
             
             return "";
         }        
         public static string Minus()
         {
-            Console.Write($"Calculate: {CalculatorCurrentValue} - ");
+            Console.Write($"Calculate: {_calculatorCurrentValue} - ");
             var n = Console.ReadLine()?.Trim();
             double.TryParse(n, out var converted);
-            CalculatorCurrentValue = CalculatorCurrentValue - converted;
-            Console.WriteLine($"Result: {CalculatorCurrentValue}");
+            _calculatorCurrentValue = _calculatorCurrentValue - converted;
+            Console.WriteLine($"Result: {_calculatorCurrentValue}");
             Thread.Sleep(2000);
             
             return "";
         }        
         public static string Division()
         {
-            Console.Write($"Calculate: {CalculatorCurrentValue} / ");
+            Console.Write($"Calculate: {_calculatorCurrentValue} / ");
             var n = Console.ReadLine()?.Trim();
             double.TryParse(n, out var converted);
             if (Math.Abs(converted) < 0.000001)
@@ -64,9 +62,9 @@ namespace ConsoleApp
             }
             else
             {
-                CalculatorCurrentValue = CalculatorCurrentValue / converted;
+                _calculatorCurrentValue = _calculatorCurrentValue / converted;
             }
-            Console.WriteLine($"Result: {CalculatorCurrentValue}");
+            Console.WriteLine($"Result: {_calculatorCurrentValue}");
             Thread.Sleep(2000);
             
             return "";
@@ -74,11 +72,11 @@ namespace ConsoleApp
         
         public static string Multiply()
         {
-            Console.Write($"Calculate: {CalculatorCurrentValue} * ");
+            Console.Write($"Calculate: {_calculatorCurrentValue} * ");
             var n = Console.ReadLine()?.Trim();
             double.TryParse(n, out var converted);
-            CalculatorCurrentValue = CalculatorCurrentValue * converted;
-            Console.WriteLine($"Result: {CalculatorCurrentValue}");
+            _calculatorCurrentValue = _calculatorCurrentValue * converted;
+            Console.WriteLine($"Result: {_calculatorCurrentValue}");
             Thread.Sleep(2000);
             
             return "";
@@ -86,11 +84,11 @@ namespace ConsoleApp
         
         public static string Power()
         {
-            Console.Write($"Calculate: {CalculatorCurrentValue} power ");
+            Console.Write($"Calculate: {_calculatorCurrentValue} power ");
             var n = Console.ReadLine()?.Trim();
             double.TryParse(n, out var converted);
-            CalculatorCurrentValue = Math.Pow(CalculatorCurrentValue, converted);
-            Console.WriteLine($"Result: {CalculatorCurrentValue}");
+            _calculatorCurrentValue = Math.Pow(_calculatorCurrentValue, converted);
+            Console.WriteLine($"Result: {_calculatorCurrentValue}");
             Thread.Sleep(2000);
             
             return "";
@@ -98,38 +96,38 @@ namespace ConsoleApp
         
         public static string Negate()
         {
-            CalculatorCurrentValue = CalculatorCurrentValue * -1;
-            Console.WriteLine($"Result: {CalculatorCurrentValue}");
+            _calculatorCurrentValue = _calculatorCurrentValue * -1;
+            Console.WriteLine($"Result: {_calculatorCurrentValue}");
             Thread.Sleep(2000);
             return "";
         }
                 
         public static string Absolute()
         {
-            CalculatorCurrentValue = Math.Abs(CalculatorCurrentValue);
-            Console.WriteLine($"Result: {CalculatorCurrentValue}");
+            _calculatorCurrentValue = Math.Abs(_calculatorCurrentValue);
+            Console.WriteLine($"Result: {_calculatorCurrentValue}");
             Thread.Sleep(2000);
             return "";
         }     
         
         public static string SquareRoot()
         {
-            if (CalculatorCurrentValue >= 0)
+            if (_calculatorCurrentValue >= 0)
             {
-                CalculatorCurrentValue = Math.Sqrt(CalculatorCurrentValue);
+                _calculatorCurrentValue = Math.Sqrt(_calculatorCurrentValue);
             }
             else
             {
                 Console.WriteLine("You can not take square root out of negative number!");
             }
-            Console.WriteLine($"Result: {CalculatorCurrentValue}");
+            Console.WriteLine($"Result: {_calculatorCurrentValue}");
             Thread.Sleep(2000);
             return "";
         }
         public static string Square()
         {
-            CalculatorCurrentValue = Math.Pow(CalculatorCurrentValue, 2);
-            Console.WriteLine($"Result: {CalculatorCurrentValue}");
+            _calculatorCurrentValue = Math.Pow(_calculatorCurrentValue, 2);
+            Console.WriteLine($"Result: {_calculatorCurrentValue}");
             Thread.Sleep(2000);
             return "";
         }
