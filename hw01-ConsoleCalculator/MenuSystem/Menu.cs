@@ -96,18 +96,25 @@ namespace MenuSystem
             switch (Level)
             {
                case MenuLevel.Level0:
-                   _menuItems.Add(exit);
+                   AddItemToMenu(exit);
                    break;
                case MenuLevel.Level1:
-                   _menuItems.Add(main);
-                   _menuItems.Add(exit);
+                   AddItemToMenu(main);
+                   AddItemToMenu(exit);
                    break;
                 case MenuLevel.Level2Plus:
-                    
-                    _menuItems.Add(r);
-                    _menuItems.Add(main);
-                    _menuItems.Add(exit);
+                    AddItemToMenu(r);
+                    AddItemToMenu(main);
+                    AddItemToMenu(exit);
                     break;
+            }
+        }
+
+        private void AddItemToMenu(MenuItem item)
+        {
+            if (_menuItems.All(x => x.UserChoiceCharacter != item.UserChoiceCharacter))
+            {
+                _menuItems.Add(item);
             }
         }
     }
