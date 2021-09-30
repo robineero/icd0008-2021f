@@ -11,3 +11,9 @@ Unary: negate, sqrt, square, abs value
 Display current calculator value in current menu.  
 
 Make menu colorful. Can you use arrow key based navigation?
+
+Notes:
+
+R → ""  
+M → "M"  
+X → "X"  

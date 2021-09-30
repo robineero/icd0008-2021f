@@ -4,14 +4,13 @@ using System.Linq;
 using MenuSystem.Enum;
 
 namespace MenuSystem
-{
-    // https://gitlab.cs.ttu.ee/rolaur/icd0008-2020f/-/blob/master/hw1-menu/MenuSystem/MenuSystem/Menu.cs
+{ 
     public class Menu
     {
         private String MenuTitle { get; set; }
         private readonly List<MenuItem> _menuItems = new();
         public MenuLevel Level { get; private set; }
-        private readonly List<String> _reservedCharacters = new() { "M", "R", "X" }; // main, exit, return 
+        private readonly List<String> _reservedCharacters = new() { "M", "R", "X" }; // main, return, exit 
 
         public Menu(MenuLevel menuLevel, string menuTitle)
         {
@@ -21,47 +20,54 @@ namespace MenuSystem
         public string Run()
         {
             Boolean runDone;
-            Boolean isInputValid;
-            String userChoice;
-            
+            Boolean menuContainsSuchCharacter;
+            String userInput;
+
             do
             {
                 AddPredefinedOptions();
                 Console.WriteLine(MenuTitle);
                 Console.WriteLine(OutputMenu(_menuItems));
                 Console.Write("Your choice: ");
-                userChoice = Console.ReadLine()?.Trim().ToUpper() ?? "";
-                isInputValid = _menuItems.Any(x => x.UserChoiceCharacter == userChoice);
-                runDone = _menuItems.Any(x => x.UserChoiceCharacter.Equals(userChoice)) && _reservedCharacters.Contains(userChoice);
                 
-                if (isInputValid)
+                userInput = Console.ReadLine()?.Trim().ToUpper() ?? "";
+                
+                menuContainsSuchCharacter = _menuItems.Any(x => x.UserChoiceCharacter == userInput);
+                
+                // if is special character and current menu contains the character
+                runDone = _reservedCharacters.Contains(userInput) && menuContainsSuchCharacter;
+                if (runDone) Console.WriteLine($"Rundone with {userInput}...");
+                
+                if (!runDone && menuContainsSuchCharacter)
                 {
-                    MenuItem item = _menuItems.First(x => x.UserChoiceCharacter == userChoice);
-                    userChoice = item.MethodToExecute == null ? userChoice : item.MethodToExecute();
+                    MenuItem item = _menuItems.First(x => x.UserChoiceCharacter == userInput);
+                    userInput = item.MethodToExecute == null ? userInput : item.MethodToExecute();
                 }
                 
-                if (userChoice == "X" && isInputValid)
-                { 
-                    if (Level == MenuLevel.Level0)
-                        Console.WriteLine("Closing...");
-                    break;
-                }
+                // if (userInput == "X" && menuContainsSuchCharacter)
+                // { 
+                //     if (Level == MenuLevel.Level0)
+                //         Console.WriteLine("Closing...");
+                //     break;
+                // }
 
-                if (userChoice == "M" && isInputValid && Level != MenuLevel.Level0)
+                if (userInput == "M" && menuContainsSuchCharacter && Level != MenuLevel.Level0)
                 {
                     break;
                 }
                 
-                if (!runDone && !isInputValid)
-                    Console.WriteLine($"Unknown input \"{userChoice}\". Please try again.");
+                if (!runDone && !menuContainsSuchCharacter)
+                    Console.WriteLine($"Unknown input \"{userInput}\". Please try again.");
                 
             } while (!runDone);
             
-            if (runDone && userChoice == "R")
+            if (runDone && userInput == "R")
             {
                 return "";
             }
-            return userChoice;
+
+            Console.WriteLine($"userChoice return: {userInput}");
+            return userInput;
         }
 
         private String OutputMenu(List<MenuItem> items)

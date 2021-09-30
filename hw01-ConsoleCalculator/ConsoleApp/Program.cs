@@ -17,83 +17,27 @@ namespace ConsoleApp
             unary.Add(new MenuItem("D", "Absolute value", Absolute));   
             
             Menu binary = new(MenuLevel.Level1, "---- Level 1 - choose binary operation"); // +, -, /, *, x power y
-            binary.Add(new MenuItem("+", "Plus", Plus)); 
-            binary.Add(new MenuItem("-", "Minus", Minus)); 
-            binary.Add(new MenuItem("/", "Divide", Division)); 
-            binary.Add(new MenuItem("*", "Multiply", Multiply));
-            binary.Add(new MenuItem("P", "Power", Power));
+            binary.Add(new MenuItem("+", "Plus", Operations.Plus)); 
+            binary.Add(new MenuItem("-", "Minus", Operations.Minus)); 
+            binary.Add(new MenuItem("/", "Divide", Operations.Division)); 
+            binary.Add(new MenuItem("*", "Multiply", Operations.Multiply));
+            binary.Add(new MenuItem("P", "Power", Operations.Power));
             
             Menu menu = new(MenuLevel.Level0, "---- Level 0 - choose type");
             menu.Add(new MenuItem("A", "Binary", binary.Run));
             menu.Add(new MenuItem("B", "Unary", unary.Run));
             menu.Run();
         }
-        
-        public static string Plus()
+
+        public static double GetCalculatorValue()
         {
-            Console.Write($"Calculate: {_calculatorCurrentValue} + ");
-            var n = Console.ReadLine()?.Trim();
-            double.TryParse(n, out var converted);
-            _calculatorCurrentValue = _calculatorCurrentValue + converted;
-            Console.WriteLine($"Result: {_calculatorCurrentValue}");
-            Thread.Sleep(2000);
-            
-            return "";
-        }        
-        public static string Minus()
-        {
-            Console.Write($"Calculate: {_calculatorCurrentValue} - ");
-            var n = Console.ReadLine()?.Trim();
-            double.TryParse(n, out var converted);
-            _calculatorCurrentValue = _calculatorCurrentValue - converted;
-            Console.WriteLine($"Result: {_calculatorCurrentValue}");
-            Thread.Sleep(2000);
-            
-            return "";
-        }        
-        public static string Division()
-        {
-            Console.Write($"Calculate: {_calculatorCurrentValue} / ");
-            var n = Console.ReadLine()?.Trim();
-            double.TryParse(n, out var converted);
-            if (Math.Abs(converted) < 0.000001)
-            {
-                Console.WriteLine($"You can not divide with zero! You entered {n}");
-            }
-            else
-            {
-                _calculatorCurrentValue = _calculatorCurrentValue / converted;
-            }
-            Console.WriteLine($"Result: {_calculatorCurrentValue}");
-            Thread.Sleep(2000);
-            
-            return "";
+            return _calculatorCurrentValue;
         }
-        
-        public static string Multiply()
+        public static void SetCalculatorValue(double value)
         {
-            Console.Write($"Calculate: {_calculatorCurrentValue} * ");
-            var n = Console.ReadLine()?.Trim();
-            double.TryParse(n, out var converted);
-            _calculatorCurrentValue = _calculatorCurrentValue * converted;
-            Console.WriteLine($"Result: {_calculatorCurrentValue}");
-            Thread.Sleep(2000);
-            
-            return "";
-        }        
-        
-        public static string Power()
-        {
-            Console.Write($"Calculate: {_calculatorCurrentValue} power ");
-            var n = Console.ReadLine()?.Trim();
-            double.TryParse(n, out var converted);
-            _calculatorCurrentValue = Math.Pow(_calculatorCurrentValue, converted);
-            Console.WriteLine($"Result: {_calculatorCurrentValue}");
-            Thread.Sleep(2000);
-            
-            return "";
-        }        
-        
+            _calculatorCurrentValue = value;
+        }
+
         public static string Negate()
         {
             _calculatorCurrentValue = _calculatorCurrentValue * -1;
