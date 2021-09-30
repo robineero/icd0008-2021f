@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading;
-using MenuSystem;
+﻿using MenuSystem;
 using MenuSystem.Enum;
 
 namespace ConsoleApp
@@ -11,10 +9,10 @@ namespace ConsoleApp
         static void Main(string[] args)
         {
             Menu unary = new(MenuLevel.Level1, "---- Level 1 - choose unary operation"); // negate, sqrt, square, abs value  
-            unary.Add(new MenuItem("A", "Negate", Negate)); 
-            unary.Add(new MenuItem("B", "Square root", SquareRoot)); 
-            unary.Add(new MenuItem("C", "Square", Square)); 
-            unary.Add(new MenuItem("D", "Absolute value", Absolute));   
+            unary.Add(new MenuItem("A", "Negate", Operations.Negate)); 
+            unary.Add(new MenuItem("B", "Square root", Operations.SquareRoot)); 
+            unary.Add(new MenuItem("C", "Square", Operations.Square)); 
+            unary.Add(new MenuItem("D", "Absolute value", Operations.Absolute));   
             
             Menu binary = new(MenuLevel.Level1, "---- Level 1 - choose binary operation"); // +, -, /, *, x power y
             binary.Add(new MenuItem("+", "Plus", Operations.Plus)); 
@@ -37,43 +35,6 @@ namespace ConsoleApp
         {
             _calculatorCurrentValue = value;
         }
-
-        public static string Negate()
-        {
-            _calculatorCurrentValue = _calculatorCurrentValue * -1;
-            Console.WriteLine($"Result: {_calculatorCurrentValue}");
-            Thread.Sleep(2000);
-            return "";
-        }
-                
-        public static string Absolute()
-        {
-            _calculatorCurrentValue = Math.Abs(_calculatorCurrentValue);
-            Console.WriteLine($"Result: {_calculatorCurrentValue}");
-            Thread.Sleep(2000);
-            return "";
-        }     
         
-        public static string SquareRoot()
-        {
-            if (_calculatorCurrentValue >= 0)
-            {
-                _calculatorCurrentValue = Math.Sqrt(_calculatorCurrentValue);
-            }
-            else
-            {
-                Console.WriteLine("You can not take square root out of negative number!");
-            }
-            Console.WriteLine($"Result: {_calculatorCurrentValue}");
-            Thread.Sleep(2000);
-            return "";
-        }
-        public static string Square()
-        {
-            _calculatorCurrentValue = Math.Pow(_calculatorCurrentValue, 2);
-            Console.WriteLine($"Result: {_calculatorCurrentValue}");
-            Thread.Sleep(2000);
-            return "";
-        }
     }
 }

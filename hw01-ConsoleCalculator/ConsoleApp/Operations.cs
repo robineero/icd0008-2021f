@@ -8,8 +8,11 @@ namespace ConsoleApp
     {
         public static void PrintResult()
         {
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"Result: {GetCalculatorValue()}");
+            Console.ResetColor();
             Thread.Sleep(2000);
+
         }
         public static string Plus()
         {
@@ -70,6 +73,40 @@ namespace ConsoleApp
             SetCalculatorValue(Math.Pow(currentValue, converted));
             PrintResult();
             return "";
-        }  
+        } 
+        
+        public static string Negate()
+        {
+            SetCalculatorValue(GetCalculatorValue() * -1);
+            PrintResult();
+            return "";
+        }
+                
+        public static string Absolute()
+        {
+            SetCalculatorValue(Math.Abs(GetCalculatorValue()));
+            PrintResult();
+            return "";
+        }     
+        
+        public static string SquareRoot()
+        {
+            if (GetCalculatorValue() < 0)
+            {
+                Console.WriteLine("You can not take square root out of negative number!");
+            }
+            else
+            {
+                SetCalculatorValue(Math.Sqrt(GetCalculatorValue()));
+                PrintResult();
+            }
+            return "";
+        }
+        public static string Square()
+        {
+            SetCalculatorValue(Math.Pow(GetCalculatorValue(), 2));
+            PrintResult();
+            return "";
+        }
     }
 }

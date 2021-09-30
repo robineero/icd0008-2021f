@@ -19,15 +19,15 @@ namespace MenuSystem
         }
         public string Run()
         {
-            Boolean runDone;
-            Boolean menuContainsSuchCharacter;
+            bool runDone;
+            bool menuContainsSuchCharacter;
             String userInput;
 
             do
             {
-                AddPredefinedOptions();
+                
                 Console.WriteLine(MenuTitle);
-                Console.WriteLine(OutputMenu(_menuItems));
+                OutputMenu();
                 Console.Write("Your choice: ");
                 
                 userInput = Console.ReadLine()?.Trim().ToUpper() ?? "";
@@ -41,15 +41,15 @@ namespace MenuSystem
                 if (!runDone && menuContainsSuchCharacter)
                 {
                     MenuItem item = _menuItems.First(x => x.UserChoiceCharacter == userInput);
-                    userInput = item.MethodToExecute == null ? userInput : item.MethodToExecute();
+                    userInput = item.MethodToExecute == null ? userInput : item.MethodToExecute(); // X, Y, M or execute method
                 }
                 
-                // if (userInput == "X" && menuContainsSuchCharacter)
-                // { 
-                //     if (Level == MenuLevel.Level0)
-                //         Console.WriteLine("Closing...");
-                //     break;
-                // }
+                if (userInput == "X" && menuContainsSuchCharacter)
+                { 
+                    if (Level == MenuLevel.Level0)
+                        Console.WriteLine("Closing...");
+                    break;
+                }
 
                 if (userInput == "M" && menuContainsSuchCharacter && Level != MenuLevel.Level0)
                 {
@@ -61,23 +61,29 @@ namespace MenuSystem
                 
             } while (!runDone);
             
-            if (runDone && userInput == "R")
+            if (runDone && userInput == "R") // "R" is special case, returns "" == Func doing nothing
             {
                 return "";
             }
-
-            Console.WriteLine($"userChoice return: {userInput}");
             return userInput;
         }
 
-        private String OutputMenu(List<MenuItem> items)
+        private void OutputMenu()
         {
-            List<String> menu = new();
-            foreach (MenuItem item in items)
+            AddPredefinedOptions();
+            foreach (MenuItem item in _menuItems)
             {
-                menu.Add(item.ToString());
+                if (_reservedCharacters.Contains(item.UserChoiceCharacter))
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.WriteLine(item);
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine(item);
+                }
             }
-            return String.Join("\n", menu);
         }
 
         public void Add(MenuItem item)
