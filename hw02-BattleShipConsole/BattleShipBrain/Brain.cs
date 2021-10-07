@@ -1,29 +1,59 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace BattleShipBrain
 {
     public class Brain
     {
-        private readonly Board _boardA;
-        private readonly Board _boardB;
-        // private readonly Player _currentPlayer;
-        
+        private Player _currentPlayer = default!;
+        private Player _playerA = default!;
+        private Player _playerB = default!;
 
-        public Brain(int width, int height)
+        public void Run()
         {
-            _boardA = new Board(width, height, false);
-            _boardB = new Board(width, height);
-        }
+            // Console.Write("Board width: ");
+            int width = 15;
+            // Int32.TryParse(Console.ReadLine()?.Trim(), out width);
+            // Console.Write("Board height: ");
+            int height = 5;
+            //Int32.TryParse(Console.ReadLine()?.Trim(), out height);
+            _playerA = new("PlayerA", new Board(width, height, true));
+            _playerB = new("PlayerB", new Board(width, height, true));
 
-        public Board GetBoardA()
-        {
-            return _boardA;
-        }        
-        
-        public Board GetBoardB()
-        {
-            return _boardA;
+            do
+            {
+                _currentPlayer = _currentPlayer == _playerA ?  _playerB : _playerA;
+                Console.WriteLine($"\n{_currentPlayer.Name}, place your bomb.");
+                Console.WriteLine(_currentPlayer.Board);
+                int col;
+                int row;
+                
+                do
+                {
+                    Console.Write("Col: ");
+                    Int32.TryParse(Console.ReadLine()?.Trim(), out col);
+                    Console.Write("Row: ");
+                    Int32.TryParse(Console.ReadLine()?.Trim(), out row);
+
+                    if (row < height && col < width)
+                    {
+                        String feedback = _currentPlayer.Board.PlaceBomb(col,row);
+                        Console.WriteLine(feedback);
+                        break;
+                    }
+
+                    Console.WriteLine("Something went wrong with the inputs. Please choose again.");
+                    
+                } while (true);
+                
+                for (int i = 0; i < _currentPlayer.Board.Width * 3; i++)
+                {
+                    Console.Write("=");
+                    Thread.Sleep(15);
+                }
+                
+            } while (true);
         }
-        
     }
 }

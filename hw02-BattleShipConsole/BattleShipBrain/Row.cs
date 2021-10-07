@@ -36,13 +36,13 @@ namespace BattleShipBrain
 
         public override string ToString()
         {
-            String result = "";
-            foreach (var r in _row)
+            List<String> result = new();
+            foreach (var cell in _row)
             {
-                result += r;
+                result.Add(cell.ToString());
             }
 
-            return result;
+            return String.Join(" | " ,result);
         }
         
         public void PlaceBomb(int x)
@@ -52,6 +52,11 @@ namespace BattleShipBrain
                 IsBomb = true,
                 IsShip = false
             };
+        }        
+        
+        public BoardSquareState CurrentBoardSquareState(int x)
+        {
+            return _row[x];
         }
     }
 }
