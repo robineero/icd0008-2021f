@@ -8,22 +8,20 @@ Battleship initial description
 
 Build an console and web game - "Battleship".
 
-Requirements
+**Requirements**
 
 Maintain the state of a game of "Battleship", including four boards, two for each player, one for recording the current state of the players ships, and one for recording the players' attacks. We want to take care of the basic ability to control the game, and the players moves whilst keeping of track of this game state.
 
 
-Standard setup:
+**Standard setup:**
 
 In battleship, a board consists of a grid of 10 x 10, labelled vertically with the numbers 1 to 10 (from top to bottom) and labelled horizontally with the letters a to j (from left to right).
 
-A player knows:
+**A player knows:**
 
-where their own ships are
-
-where their own previous attacking moves have been made, and their result
-
-where their opponent's previous attacking moves have been made and their result
+- where their own ships are
+- where their own previous attacking moves have been made, and their result
+- where their opponent's previous attacking moves have been made and their result
 
 To play the game, each player, plays an attacking move in turn, the result of this may be a "hit" if the square is occupied by an opponent's ship, or a "miss" if the square is not. A player wins when they have "hit" every square occupied by their opponents ships.
 

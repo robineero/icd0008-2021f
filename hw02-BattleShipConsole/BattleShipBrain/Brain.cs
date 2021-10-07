@@ -6,10 +6,12 @@ namespace BattleShipBrain
     {
         private readonly Board _boardA;
         private readonly Board _boardB;
+        // private readonly Player _currentPlayer;
+        
 
         public Brain(int width, int height)
         {
-            _boardA = new Board(width, height, true);
+            _boardA = new Board(width, height, false);
             _boardB = new Board(width, height);
         }
 

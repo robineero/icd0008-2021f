@@ -5,7 +5,7 @@ namespace BattleShipBrain
 {
     public class Row
     {
-        private List<BoardSquareState> _row;
+        public List<BoardSquareState> _row { get; private set; }
         private readonly Random _random = new Random();
         public Row(int width, bool random = false)
         {
@@ -43,6 +43,15 @@ namespace BattleShipBrain
             }
 
             return result;
+        }
+        
+        public void PlaceBomb(int x)
+        {
+            _row[x] = new BoardSquareState()
+            {
+                IsBomb = true,
+                IsShip = false
+            };
         }
     }
 }

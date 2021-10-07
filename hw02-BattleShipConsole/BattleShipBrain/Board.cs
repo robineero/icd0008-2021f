@@ -41,5 +41,10 @@ namespace BattleShipBrain
             }
             return $"{currentRow}";
         }
+
+        public void PlaceBomb(int x, int y)
+        {
+            Rows[y].PlaceBomb(x);
+        }
     }
 }
