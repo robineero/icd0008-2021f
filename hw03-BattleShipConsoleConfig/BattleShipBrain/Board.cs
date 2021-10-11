@@ -8,7 +8,7 @@ namespace BattleShipBrain
         private List<Row> Rows { get; set; }
         public int Width { get; }
 
-        public List<Ship> Ships { get; set; } = default!;
+        public List<Ship> Ships { get; set; } = new();
         
         public Board(Config conf)
         {
@@ -20,6 +20,11 @@ namespace BattleShipBrain
                 Row row = new(i, conf.Width, conf.Random);
                 Rows.Add(row);
             }
+        }
+
+        public void AddShip(Ship ship)
+        {
+            Ships.Add(ship);
         }
 
         public override string ToString()

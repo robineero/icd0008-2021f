@@ -6,14 +6,6 @@
         public int Y { get; set; }
         public BoardSquareState BoardSquareState { get; set; }
 
-        public void PlaceBomb()
-        {
-            BoardSquareState = new BoardSquareState()
-            {
-                IsBomb = true,
-                IsShip = false
-            };
-        }
         public override string ToString()
         {
             if (BoardSquareState.IsBomb && BoardSquareState.IsShip)

@@ -12,3 +12,5 @@
 **Notes:**
 
 **Ship** - collection of coordinates with BoardSquareState IsShip.true and IsBomb.false.
+
+**Whose turn is it** - 

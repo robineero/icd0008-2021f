@@ -53,7 +53,11 @@ namespace BattleShipBrain
         
         public void PlaceBomb(int x)
         {
-            _row[x].PlaceBomb();
+            _row[x] = new Coordinate() { X = _row[x].X, Y = _row[x].Y, BoardSquareState = new BoardSquareState()
+            {
+                IsBomb = true,
+                IsShip = false
+            }};
         }        
         
         public BoardSquareState CurrentBoardSquareState(int x)

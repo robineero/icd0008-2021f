@@ -19,10 +19,16 @@ namespace BattleShipBrain
             int height = 5;
             //Int32.TryParse(Console.ReadLine()?.Trim(), out height);
             
-            Config config = new Config(width, height, true);
+            Config config = new Config(width, height, false);
             
             _playerA = new("PlayerA", new Board(config));
             _playerB = new("PlayerB", new Board(config));
+            
+            
+            // Adding one ship test
+            List<Coordinate> coordinates = new();
+            coordinates.Add(new Coordinate() { X= 0, Y = 0});
+            _playerA.Board.AddShip(new Ship("Patrol", coordinates));
 
             do
             {
@@ -39,7 +45,7 @@ namespace BattleShipBrain
                     Console.Write("Row: ");
                     Int32.TryParse(Console.ReadLine()?.Trim(), out row);
 
-                    if (row < height && col < width)
+                    if (row < height && col < width && row >= 0 && col >= 0)
                     {
                         String feedback = _currentPlayer.Board.PlaceBomb(col,row);
                         Console.WriteLine(feedback);
