@@ -24,11 +24,12 @@ namespace BattleShipBrain
             _playerA = new("PlayerA", new Board(config));
             _playerB = new("PlayerB", new Board(config));
             
-            
             // Adding one ship test
-            List<Coordinate> coordinates = new();
-            coordinates.Add(new Coordinate() { X= 0, Y = 0});
-            _playerA.Board.AddShip(new Ship("Patrol", coordinates));
+            ShipFactory shipFactory = new ();
+            Ship patrol = shipFactory.GetPatrol(1, 1, ShipDirection.NorthSouth);
+            Ship submarine = shipFactory.GetSubmarine(3, 0, ShipDirection.EastWest);
+            _playerA.Board.AddShip(patrol);
+            _playerA.Board.AddShip(submarine);
 
             do
             {

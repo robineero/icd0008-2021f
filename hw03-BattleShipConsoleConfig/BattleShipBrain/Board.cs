@@ -7,7 +7,6 @@ namespace BattleShipBrain
     {
         private List<Row> Rows { get; set; }
         public int Width { get; }
-
         public List<Ship> Ships { get; set; } = new();
         
         public Board(Config conf)
@@ -24,7 +23,20 @@ namespace BattleShipBrain
 
         public void AddShip(Ship ship)
         {
-            Ships.Add(ship);
+            List<Coordinate> coordinates = ship.Coordinates;
+            foreach(Coordinate coord in coordinates)
+            {
+                Rows[coord.Y]._row[coord.X] = new Coordinate()
+                {
+                    X = coord.X,
+                    Y = coord.Y,
+                    BoardSquareState = new BoardSquareState()
+                    {
+                        IsBomb = false,
+                        IsShip = true
+                    }
+                };
+            }
         }
 
         public override string ToString()
@@ -54,7 +66,6 @@ namespace BattleShipBrain
                 {
                     header.Add(i + "  ");
                 }
-                
             }
 
             return String.Join("", header);
@@ -71,7 +82,7 @@ namespace BattleShipBrain
 
         public BoardSquareState CurrentBoardSquareState(int x, int y)
         {
-            return Rows[y].CurrentBoardSquareState(x);
+            return Rows[y]._row[x].BoardSquareState;
         }
 
         public String PlaceBomb(int x, int y)

@@ -60,9 +60,5 @@ namespace BattleShipBrain
             }};
         }        
         
-        public BoardSquareState CurrentBoardSquareState(int x)
-        {
-            return _row[x].BoardSquareState;
-        }
     }
 }
