@@ -9,28 +9,24 @@ namespace BattleShipBrain
         // Submarine   1 x 3
         // Cruiser     1 x 2
         // Patrol      1 x 1
-
-        public Ship GetPatrol(int x, int y, ShipDirection direction = ShipDirection.NorthSouth)
-        {
-            List<Coordinate> coordinates = new();
-            coordinates.Add(new Coordinate(x, y));
-            Ship patrol = new Ship("Patrol", coordinates);
-            
-            return patrol;
-        }        
         
-        public Ship GetSubmarine(int x, int y, ShipDirection direction = ShipDirection.NorthSouth)
+        public Ship GetShip(int x, int y, ShipType type, ShipDirection direction = ShipDirection.NorthSouth)
+        {
+            Ship ship = new (type, GetCoordinates(x, y, type, direction));
+            return ship;
+        }
+
+        private List<Coordinate> GetCoordinates(int x, int y, ShipType type, ShipDirection direction)
         {
             List<Coordinate> coordinates = new();
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < (int) type; i++)  // sorry for the cast
             {
                 if (direction == ShipDirection.NorthSouth)
                     coordinates.Add(new Coordinate(x, y + i));
                 else
                     coordinates.Add(new Coordinate(x + i, y));
             }
-            Ship submarine = new ("Submarine", coordinates);
-            return submarine;
+            return coordinates;
         }
     }
 
@@ -38,5 +34,14 @@ namespace BattleShipBrain
     {
         NorthSouth,
         EastWest
+    }
+
+    public enum ShipType
+    {
+        Patrol = 1,
+        Cruiser = 2,
+        Submarine = 3,
+        Battleship = 4,
+        Carrier = 5
     }
 }

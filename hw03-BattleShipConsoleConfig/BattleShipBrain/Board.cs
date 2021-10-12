@@ -149,5 +149,58 @@ namespace BattleShipBrain
 
             return coordinate;
         }
+
+        public void SetupNewBoard()
+        {
+            ShipFactory shipFactory = new ();
+            Dictionary<ShipType, String> names = new()
+            {
+                { ShipType.Carrier, "Carrier (1x5)" },
+                { ShipType.Battleship, "Battleship (1x4)" },
+                // { ShipType.Submarine, "Submarine (1x3)" },
+                // { ShipType.Cruiser, "Cruiser (1x2)" },
+                // { ShipType.Patrol, "Patrol (1x1)" },
+            };
+
+            foreach (var name in names)
+            {
+                int row = -1;
+                int col = -1;
+                string input;
+                ShipDirection direction = ShipDirection.NorthSouth;
+                Console.WriteLine(ToString());
+                Console.WriteLine($"Enter coordinates for {name.Value} ship");
+
+
+                while (true)
+                {
+                    Console.Write("Col: ");
+                    input = Console.ReadLine()?.Trim() ?? "";
+                    col = input == "" ? -1 : Int32.Parse(input);
+                
+                    Console.Write("Row: ");
+                    input = Console.ReadLine()?.Trim() ?? "";
+                    row = input == "" ? -1 : Int32.Parse(input);
+
+                    if (row >= 0 && col >= 0)
+                    {
+                        break;
+                    }
+                    Console.WriteLine("Something went wrong with the input. Try again.");
+
+                }
+                
+                Console.Write("Direction (NS*/EW): ");
+                input = Console.ReadLine()?.Trim().ToLower() ?? "";
+                direction = input == "ew" ? ShipDirection.EastWest : ShipDirection.NorthSouth;
+                
+                Ship ship = shipFactory.GetShip(col, row, name.Key, direction);
+                AddShip(ship);  // TODO: This step needs validation for ArgumentOutOfRangeException
+            }
+
+            Console.WriteLine(ToString());
+            Console.WriteLine("Your ships are now placed. Press any key to continue...");
+            Console.ReadLine();
+        }
     }
 }

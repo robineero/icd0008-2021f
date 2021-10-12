@@ -28,9 +28,9 @@ namespace BattleShipBrain
                 Config config = CreateConfig();
             
                 _playerA = new("A","PlayerA", new Board(config), true);
+                _playerA.Board.SetupNewBoard();
                 _playerB = new("B","PlayerB", new Board(config));
-
-                PlaceShips();
+                
             }
 
             
@@ -80,15 +80,7 @@ namespace BattleShipBrain
 
             } while (true);
         }
-
-        private void PlaceShips()
-        {
-            ShipFactory shipFactory = new ();
-            Ship patrol = shipFactory.GetPatrol(1, 1, ShipDirection.NorthSouth);
-            Ship submarine = shipFactory.GetSubmarine(3, 0, ShipDirection.NorthSouth);
-            _playerA.Board.AddShip(patrol);
-            _playerA.Board.AddShip(submarine);
-        }
+        
 
         private Config CreateConfig()
         {
@@ -100,7 +92,7 @@ namespace BattleShipBrain
             int height;
             Int32.TryParse(Console.ReadLine()?.Trim(), out height);
             
-            return new Config (width == 0 ? 5: width, height == 0 ? 5 : height);
+            return new Config (width <= 5 ? 5: width, height <= 5 ? 5 : height);
         }
 
         private void SwitchCurrentPlayer()
