@@ -5,10 +5,13 @@ namespace BattleShipBrain
 {
     public class Board
     {
-        private List<Row> Rows { get; set; }
+        public List<Row> Rows { get; set; } = new List<Row>();
         public int Width { get; }
-        public List<Ship> Ships { get; set; } = new();
-        
+
+        public Board()
+        {
+        }
+
         public Board(Config conf)
         {
             Rows = new();

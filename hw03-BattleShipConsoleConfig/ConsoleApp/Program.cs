@@ -9,7 +9,7 @@ namespace ConsoleApp
         static void Main(string[] args)
         {
 
-            Brain brain = new Brain();
+            Brain brain = new ();
             brain.Run();
 
         }

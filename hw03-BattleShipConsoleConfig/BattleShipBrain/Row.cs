@@ -5,8 +5,13 @@ namespace BattleShipBrain
 {
     public class Row
     {
-        public List<Coordinate> _row { get; private set; } = new();
+        public List<Coordinate> _row { get; set; } = new();
         private readonly Random _random = new Random();
+
+        public Row()
+        {
+        }
+
         public Row(int rowNr, int width, bool random = false)
         {
             for (int i = 0; i < width; i++)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading;
 
 namespace BattleShipBrain
@@ -13,13 +14,13 @@ namespace BattleShipBrain
         public void Run()
         {
             // Console.Write("Board width: ");
-            int width = 15;
+            int width = 5;
             // Int32.TryParse(Console.ReadLine()?.Trim(), out width);
             // Console.Write("Board height: ");
             int height = 5;
             //Int32.TryParse(Console.ReadLine()?.Trim(), out height);
             
-            Config config = new Config(width, height, false);
+            Config config = new (width, height, false);
             
             _playerA = new("PlayerA", new Board(config), true);
             _playerB = new("PlayerB", new Board(config));
@@ -27,12 +28,16 @@ namespace BattleShipBrain
             // Adding one ship test
             ShipFactory shipFactory = new ();
             Ship patrol = shipFactory.GetPatrol(1, 1, ShipDirection.NorthSouth);
-            Ship submarine = shipFactory.GetSubmarine(3, 0, ShipDirection.EastWest);
+            Ship submarine = shipFactory.GetSubmarine(3, 0, ShipDirection.NorthSouth);
             _playerA.Board.AddShip(patrol);
             _playerA.Board.AddShip(submarine);
-
+            
             do
             {
+                // Serialization for testing
+                _playerA = DeserializeGame()![0];
+                _playerB = DeserializeGame()![1];
+                
                 _currentPlayer = _playerA.MyTurn ? _playerA : _playerB;
                 SwitchCurrentPlayer();
                 
@@ -72,6 +77,29 @@ namespace BattleShipBrain
         {
             _playerA.MyTurn = !_playerA.MyTurn;
             _playerB.MyTurn = !_playerB.MyTurn;
+        }
+
+        private String SerializeGame()
+        {
+            List<Player> game = new List<Player>()
+            {
+                _playerA, _playerB
+            };
+
+            var jsonOptions = new JsonSerializerOptions()
+            {
+                WriteIndented = true
+            };
+            
+            var json = JsonSerializer.Serialize(game, jsonOptions);
+            return json;
+        }
+        
+        private List<Player>? DeserializeGame()
+        {
+            String json = SerializeGame();
+            List<Player>? game = JsonSerializer.Deserialize<List<Player>>(json);
+            return game;
         }
     }
 }
