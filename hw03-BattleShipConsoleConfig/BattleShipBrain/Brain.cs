@@ -21,7 +21,7 @@ namespace BattleShipBrain
             
             Config config = new Config(width, height, false);
             
-            _playerA = new("PlayerA", new Board(config));
+            _playerA = new("PlayerA", new Board(config), true);
             _playerB = new("PlayerB", new Board(config));
             
             // Adding one ship test
@@ -33,7 +33,9 @@ namespace BattleShipBrain
 
             do
             {
-                _currentPlayer = _currentPlayer == _playerA ?  _playerB : _playerA;
+                _currentPlayer = _playerA.MyTurn ? _playerA : _playerB;
+                SwitchCurrentPlayer();
+                
                 Console.WriteLine($"\n{_currentPlayer.Name}, place your bomb.");
                 Console.WriteLine(_currentPlayer.Board);
                 int col;
@@ -64,6 +66,12 @@ namespace BattleShipBrain
                 }
                 
             } while (true);
+        }
+
+        private void SwitchCurrentPlayer()
+        {
+            _playerA.MyTurn = !_playerA.MyTurn;
+            _playerB.MyTurn = !_playerB.MyTurn;
         }
     }
 }

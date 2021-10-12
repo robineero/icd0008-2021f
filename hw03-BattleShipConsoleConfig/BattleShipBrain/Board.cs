@@ -41,34 +41,38 @@ namespace BattleShipBrain
 
         public override string ToString()
         {
-            List <String> board = new();
-            board.Add(GetHeader());
+            PrintBoardHeader();
+            
             for (int i = 0; i < Rows.Count; i++)
             {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
                 String rowNr = GetFormattedRowNr(i, Rows.Count);
-                board.Add($"{rowNr}. {Rows[i]}");
+                Console.Write($"{rowNr}. ");
+                Console.ResetColor();
+                Console.Write($"{Rows[i]}");
+                if (i != Rows.Count - 1) Console.Write("\n");
             }
-            
-            return String.Join("\n", board);
-        }
 
-        private String GetHeader()
+            return "";
+        }
+        
+        private void PrintBoardHeader()
         {
-            List <String> header = new();
-            header.Add("    "); // padding
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.Write("    "); // padding
             for (int i = 0; i < Width; i++)
             {
                 if (i < 10)
                 {
-                    header.Add(i + "   ");
+                    Console.Write(i + "   ");
                 }
                 else
                 {
-                    header.Add(i + "  ");
+                    Console.Write(i + "  ");
                 }
             }
-
-            return String.Join("", header);
+            Console.Write("\n");
+            Console.ResetColor();
         }
 
         private string GetFormattedRowNr(int currentRow, int rowCount)
@@ -79,22 +83,44 @@ namespace BattleShipBrain
             }
             return $"{currentRow}";
         }
-
-        public BoardSquareState CurrentBoardSquareState(int x, int y)
-        {
-            return Rows[y]._row[x].BoardSquareState;
-        }
-
+        
         public String PlaceBomb(int x, int y)
         {
-            BoardSquareState state = CurrentBoardSquareState(x, y);
-            Rows[y].PlaceBomb(x);
-
+            BoardSquareState state = Rows[y]._row[x].BoardSquareState;
+            
             if (state.IsShip && !state.IsBomb)
             {
+                Rows[y]._row[x] = CoordinateFactory(x, y, true, true);
                 return "It was A HIT :)";
+            } 
+            if (state.IsBomb)
+            {
+                return "C'mon. You already had bomb there!";
+            } 
+            if (!state.IsShip && !state.IsBomb)
+            {
+                Rows[y]._row[x] = CoordinateFactory(x, y, true, false);
+                return "It was a miss :(";
             }
             return "It was a miss :(";
+        }
+
+        public Coordinate CoordinateFactory(int x, int y, Boolean isBomb, Boolean isShip)
+        {
+            BoardSquareState newState = new BoardSquareState()
+            {
+                IsBomb = isBomb,
+                IsShip = isShip
+            };
+            
+            Coordinate coordinate = new Coordinate()
+            {
+                X = x,
+                Y = y,
+                BoardSquareState = newState
+            };
+
+            return coordinate;
         }
     }
 }

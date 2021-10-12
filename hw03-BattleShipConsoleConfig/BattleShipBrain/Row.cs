@@ -40,15 +40,33 @@ namespace BattleShipBrain
             return cell;
         }
 
-        public override string ToString()
+        public override string ToString() // acts like voic
         {
-            List<String> result = new();
-            foreach (var cell in _row)
+            for (int i = 0; i < _row.Count; i++)
             {
-                result.Add(cell.ToString());
-            }
+                Coordinate cell = _row[i];
+                BoardSquareState bss = cell.BoardSquareState;
 
-            return String.Join(" | " ,result);
+                if (bss.IsShip && !bss.IsBomb)
+                {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.Write(cell);
+                    Console.ResetColor();
+                } else if (bss.IsShip && bss.IsBomb)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write(cell);
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.Write(cell);
+                }
+                
+                if (i != _row.Count -1) Console.Write(" | ");
+            }
+            
+            return "";
         }
         
         public void PlaceBomb(int x)
