@@ -4,7 +4,6 @@ namespace BattleShipBrain
 {
     public class ShipFactory
     {
-        
         // Carrier     1 x 5
         // Battleship  1 x 4
         // Submarine   1 x 3
@@ -30,7 +29,7 @@ namespace BattleShipBrain
                 else
                     coordinates.Add(new Coordinate(x + i, y));
             }
-            Ship submarine = new Ship("Submarine", coordinates);
+            Ship submarine = new ("Submarine", coordinates);
             return submarine;
         }
     }

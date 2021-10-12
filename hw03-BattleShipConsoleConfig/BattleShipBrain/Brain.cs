@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Threading;
 
@@ -10,6 +11,7 @@ namespace BattleShipBrain
         private Player _currentPlayer = default!;
         private Player _playerA = default!;
         private Player _playerB = default!;
+        private String _savedGameFilename = "ggu6numaa98isv85omtg.json";
 
         public void Run()
         {
@@ -22,8 +24,8 @@ namespace BattleShipBrain
             
             Config config = new (width, height, false);
             
-            _playerA = new("PlayerA", new Board(config), true);
-            _playerB = new("PlayerB", new Board(config));
+            _playerA = new("A","PlayerA", new Board(config), true);
+            _playerB = new("B","PlayerB", new Board(config));
             
             // Adding one ship test
             ShipFactory shipFactory = new ();
@@ -35,8 +37,9 @@ namespace BattleShipBrain
             do
             {
                 // Serialization for testing
-                _playerA = DeserializeGame()![0];
-                _playerB = DeserializeGame()![1];
+                SerializeGame();
+                _playerA = DeserializeGame()!.First(x => x.Code == "A");
+                _playerB = DeserializeGame()!.First(x => x.Code == "B");
                 
                 _currentPlayer = _playerA.MyTurn ? _playerA : _playerB;
                 SwitchCurrentPlayer();
@@ -64,11 +67,15 @@ namespace BattleShipBrain
                     
                 } while (true);
                 
-                for (int i = 0; i < _currentPlayer.Board.Width * 3; i++)
+                Console.Write("Loading new board");
+                
+                for (int i = 0; i < 4; i++)
                 {
-                    Console.Write("= ");
-                    Thread.Sleep(15);
+                    Console.Write(".");
+                    Thread.Sleep(600);
                 }
+
+                Console.WriteLine("\n\n\n");
                 
             } while (true);
         }
@@ -79,7 +86,7 @@ namespace BattleShipBrain
             _playerB.MyTurn = !_playerB.MyTurn;
         }
 
-        private String SerializeGame()
+        private void SerializeGame()
         {
             List<Player> game = new List<Player>()
             {
@@ -92,14 +99,19 @@ namespace BattleShipBrain
             };
             
             var json = JsonSerializer.Serialize(game, jsonOptions);
-            return json;
+            System.IO.File.WriteAllText(_savedGameFilename, json);
         }
         
         private List<Player>? DeserializeGame()
         {
-            String json = SerializeGame();
-            List<Player>? game = JsonSerializer.Deserialize<List<Player>>(json);
-            return game;
+            if (System.IO.File.Exists(_savedGameFilename))
+            {
+                String json = System.IO.File.ReadAllText(_savedGameFilename);
+                List<Player>? game = JsonSerializer.Deserialize<List<Player>>(json);
+                return game;
+            }
+
+            throw new Exception("Game file is not available for deserialization");
         }
     }
 }

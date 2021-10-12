@@ -16,3 +16,9 @@
 **Whose turn is it** - defined in Player.cs  
 
 No need to see your own board (with ships) when playing. See your own board only when generating it.
+
+TODO:
+
+- New game setup
+- Continue previous game
+- Game statistics for player

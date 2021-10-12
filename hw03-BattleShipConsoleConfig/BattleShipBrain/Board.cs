@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace BattleShipBrain
 {
     public class Board
     {
         public List<Row> Rows { get; set; } = new List<Row>();
-        public int Width { get; }
+        public int Width { get; set;  }
 
         public Board()
         {
@@ -47,7 +48,8 @@ namespace BattleShipBrain
             PrintBoardHeader();
             
             for (int i = 0; i < Rows.Count; i++)
-            {
+            { 
+                Thread.Sleep(100);
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 String rowNr = GetFormattedRowNr(i, Rows.Count);
                 Console.Write($"{rowNr}. ");
@@ -62,7 +64,7 @@ namespace BattleShipBrain
         private void PrintBoardHeader()
         {
             Console.ForegroundColor = ConsoleColor.DarkGray;
-            Console.Write("    "); // padding
+            Console.Write(" →  "); // padding
             for (int i = 0; i < Width; i++)
             {
                 if (i < 10)
