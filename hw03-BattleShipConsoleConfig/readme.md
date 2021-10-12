@@ -13,4 +13,6 @@
 
 **Ship** - collection of coordinates with BoardSquareState IsShip.true and IsBomb.false.
 
-**Whose turn is it** - 
+**Whose turn is it** - defined in Player.cs  
+
+No need to see your own board (with ships) when playing. See your own board only when generating it.
