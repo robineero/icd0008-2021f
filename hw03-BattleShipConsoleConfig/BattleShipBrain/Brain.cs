@@ -15,75 +15,111 @@ namespace BattleShipBrain
 
         public void Run()
         {
-            // Console.Write("Board width: ");
-            int width = 5;
-            // Int32.TryParse(Console.ReadLine()?.Trim(), out width);
-            // Console.Write("Board height: ");
-            int height = 5;
-            //Int32.TryParse(Console.ReadLine()?.Trim(), out height);
+            Console.Write("Continue previous game (Y/N): ");
+            String continuePrevious = Console.ReadLine()?.Trim().ToLower() ?? "";
+
+            if (continuePrevious == "y")
+            {
+                _playerA = DeserializeGame()!.First(x => x.Code == "A");
+                _playerB = DeserializeGame()!.First(x => x.Code == "B");
+            }
+            else
+            {
+                Config config = CreateConfig();
             
-            Config config = new (width, height, false);
-            
-            _playerA = new("A","PlayerA", new Board(config), true);
-            _playerB = new("B","PlayerB", new Board(config));
-            
-            // Adding one ship test
-            ShipFactory shipFactory = new ();
-            Ship patrol = shipFactory.GetPatrol(1, 1, ShipDirection.NorthSouth);
-            Ship submarine = shipFactory.GetSubmarine(3, 0, ShipDirection.NorthSouth);
-            _playerA.Board.AddShip(patrol);
-            _playerA.Board.AddShip(submarine);
+                _playerA = new("A","PlayerA", new Board(config), true);
+                _playerB = new("B","PlayerB", new Board(config));
+
+                PlaceShips();
+            }
+
             
             do
             {
-                // Serialization for testing
-                SerializeGame();
-                _playerA = DeserializeGame()!.First(x => x.Code == "A");
-                _playerB = DeserializeGame()!.First(x => x.Code == "B");
-                
                 _currentPlayer = _playerA.MyTurn ? _playerA : _playerB;
                 SwitchCurrentPlayer();
                 
                 Console.WriteLine($"\n{_currentPlayer.Name}, place your bomb.");
                 Console.WriteLine(_currentPlayer.Board);
-                int col;
-                int row;
                 
                 do
                 {
+                    int col;
+                    int row;
                     Console.Write("Col: ");
                     Int32.TryParse(Console.ReadLine()?.Trim(), out col);
                     Console.Write("Row: ");
                     Int32.TryParse(Console.ReadLine()?.Trim(), out row);
-
-                    if (row < height && col < width && row >= 0 && col >= 0)
+                    
+                    if (row < _currentPlayer.Board.Height && col < _currentPlayer.Board.Width && row >= 0 && col >= 0)
                     {
                         String feedback = _currentPlayer.Board.PlaceBomb(col,row);
-                        Console.WriteLine(feedback);
-                        break;
+                        if (feedback != "")
+                        {
+                            Console.WriteLine(feedback);
+                            break;
+                        }
                     }
-
-                    Console.WriteLine("Something went wrong with the inputs. Please choose again.");
+                    else
+                    {
+                        Console.WriteLine("Something went wrong with the inputs. Please choose again.");
+                    }
                     
                 } while (true);
-                
-                Console.Write("Loading new board");
-                
-                for (int i = 0; i < 4; i++)
-                {
-                    Console.Write(".");
-                    Thread.Sleep(600);
-                }
 
-                Console.WriteLine("\n\n\n");
+                SerializeGame(); // Autosave current state
                 
+                Console.Write("Continue playing this game (Y/N): ");
+                String continuePlay = Console.ReadLine()?.Trim().ToLower() ?? "";
+                if (continuePlay == "n")
+                {
+                    loadingMessage("Closing the game");
+                    break;
+                }
+                loadingMessage("Loading next player's board");
+
             } while (true);
+        }
+
+        private void PlaceShips()
+        {
+            ShipFactory shipFactory = new ();
+            Ship patrol = shipFactory.GetPatrol(1, 1, ShipDirection.NorthSouth);
+            Ship submarine = shipFactory.GetSubmarine(3, 0, ShipDirection.NorthSouth);
+            _playerA.Board.AddShip(patrol);
+            _playerA.Board.AddShip(submarine);
+        }
+
+        private Config CreateConfig()
+        {
+            Console.Write("Board width: ");
+            int width;
+            Int32.TryParse(Console.ReadLine()?.Trim(), out width);
+            
+            Console.Write("Board height: ");
+            int height;
+            Int32.TryParse(Console.ReadLine()?.Trim(), out height);
+            
+            return new Config (width == 0 ? 5: width, height == 0 ? 5 : height);
         }
 
         private void SwitchCurrentPlayer()
         {
             _playerA.MyTurn = !_playerA.MyTurn;
             _playerB.MyTurn = !_playerB.MyTurn;
+        }
+
+        private void loadingMessage(String what)
+        {
+            Console.Write($"{what}");
+                
+            for (int i = 0; i < 4; i++)
+            {
+                Console.Write(".");
+                Thread.Sleep(600);
+            }
+            
+            Console.WriteLine("\n\n");
         }
 
         private void SerializeGame()

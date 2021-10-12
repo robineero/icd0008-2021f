@@ -6,8 +6,10 @@ namespace BattleShipBrain
 {
     public class Board
     {
-        public List<Row> Rows { get; set; } = new List<Row>();
+        public List<Row> Rows { get; set; } = new();
+        public List<Ship> Ships { get; set; } = new();
         public int Width { get; set;  }
+        public int Height { get; set;  }
 
         public Board()
         {
@@ -17,6 +19,7 @@ namespace BattleShipBrain
         {
             Rows = new();
             Width = conf.Width;
+            Height = conf.Height;
 
             for (int i = 0; i < conf.Height; i++)
             {
@@ -27,6 +30,7 @@ namespace BattleShipBrain
 
         public void AddShip(Ship ship)
         {
+            Ships.Add(ship);
             List<Coordinate> coordinates = ship.Coordinates;
             foreach(Coordinate coord in coordinates)
             {
@@ -93,21 +97,39 @@ namespace BattleShipBrain
         {
             BoardSquareState state = Rows[y]._row[x].BoardSquareState;
             
-            if (state.IsShip && !state.IsBomb)
-            {
-                Rows[y]._row[x] = CoordinateFactory(x, y, true, true);
-                return "It was A HIT :)";
-            } 
             if (state.IsBomb)
             {
-                return "C'mon. You already had bomb there!";
-            } 
+                Console.WriteLine("C'mon. You already had a bomb there!! Please choose again.");
+                return "";
+            }
+            if (state.IsShip && !state.IsBomb)
+            {
+                Ship? ship = WhatShipIsThere(x, y);
+                Rows[y]._row[x] = CoordinateFactory(x, y, true, true);
+                return $"It was A HIT :) and the ship was {ship!.Name}";
+            }
             if (!state.IsShip && !state.IsBomb)
             {
                 Rows[y]._row[x] = CoordinateFactory(x, y, true, false);
-                return "It was a miss :(";
+                return "It was a miss. Sooo sad :(";
             }
-            return "It was a miss :(";
+            return "It was a miss. Sooo sad :(";
+        }
+
+        private Ship? WhatShipIsThere(int x, int y)
+        {
+            foreach (Ship ship in Ships)
+            {
+                foreach (var coord in ship.Coordinates)
+                {
+                    if (coord.X == x && coord.Y == y)
+                    {
+                        return ship;
+                    }
+                }
+            }
+
+            return null;
         }
 
         public Coordinate CoordinateFactory(int x, int y, Boolean isBomb, Boolean isShip)
