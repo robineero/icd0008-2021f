@@ -7,5 +7,8 @@ namespace Domain
     {
         public int Id { get; set; }
         public String? PlayerString { get; set; }
+        
+        public int GameId { get; set; }
+        public Game? Game { get; set; }
     }
 }

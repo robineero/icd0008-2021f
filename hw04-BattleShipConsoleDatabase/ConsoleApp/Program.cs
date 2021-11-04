@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using BattleShipBrain;
+using DAL;
+using Domain;
 
 namespace ConsoleApp
 {
@@ -10,8 +12,17 @@ namespace ConsoleApp
         
         static void Main(string[] args)
         {
-            Brain brain = new ();
-            brain.Run();
+            // Game stuff
+            // Brain brain = new ();
+            // brain.Run();
+            
+            using var db = new AppDbContext();
+
+            var game = new Game();
+            db.Games.Add(game);
+            Console.WriteLine(game.Id);
+            db.SaveChanges();
+            Console.WriteLine(game.Id);
         }
     }
 }
