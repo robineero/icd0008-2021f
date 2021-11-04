@@ -1,0 +1,549 @@
+[
+  {
+    "Name": "PlayerA",
+    "Code": "A",
+    "Board": {
+      "Rows": [
+        {
+          "_row": [
+            {
+              "X": 0,
+              "Y": 0,
+              "BoardSquareState": {
+                "IsShip": true,
+                "IsBomb": true
+              }
+            },
+            {
+              "X": 1,
+              "Y": 0,
+              "BoardSquareState": {
+                "IsShip": true,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 2,
+              "Y": 0,
+              "BoardSquareState": {
+                "IsShip": true,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 3,
+              "Y": 0,
+              "BoardSquareState": {
+                "IsShip": true,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 4,
+              "Y": 0,
+              "BoardSquareState": {
+                "IsShip": true,
+                "IsBomb": false
+              }
+            }
+          ]
+        },
+        {
+          "_row": [
+            {
+              "X": 0,
+              "Y": 1,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 1,
+              "Y": 1,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": true
+              }
+            },
+            {
+              "X": 2,
+              "Y": 1,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 3,
+              "Y": 1,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 4,
+              "Y": 1,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            }
+          ]
+        },
+        {
+          "_row": [
+            {
+              "X": 0,
+              "Y": 2,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 1,
+              "Y": 2,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 2,
+              "Y": 2,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 3,
+              "Y": 2,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 4,
+              "Y": 2,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            }
+          ]
+        },
+        {
+          "_row": [
+            {
+              "X": 0,
+              "Y": 3,
+              "BoardSquareState": {
+                "IsShip": true,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 1,
+              "Y": 3,
+              "BoardSquareState": {
+                "IsShip": true,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 2,
+              "Y": 3,
+              "BoardSquareState": {
+                "IsShip": true,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 3,
+              "Y": 3,
+              "BoardSquareState": {
+                "IsShip": true,
+                "IsBomb": true
+              }
+            },
+            {
+              "X": 4,
+              "Y": 3,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            }
+          ]
+        },
+        {
+          "_row": [
+            {
+              "X": 0,
+              "Y": 4,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 1,
+              "Y": 4,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 2,
+              "Y": 4,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 3,
+              "Y": 4,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 4,
+              "Y": 4,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            }
+          ]
+        }
+      ],
+      "Ships": [
+        {
+          "Name": "Carrier",
+          "Coordinates": [
+            {
+              "X": 0,
+              "Y": 0,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 1,
+              "Y": 0,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 2,
+              "Y": 0,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 3,
+              "Y": 0,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 4,
+              "Y": 0,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            }
+          ]
+        },
+        {
+          "Name": "Battleship",
+          "Coordinates": [
+            {
+              "X": 0,
+              "Y": 3,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 1,
+              "Y": 3,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 2,
+              "Y": 3,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 3,
+              "Y": 3,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            }
+          ]
+        }
+      ],
+      "Width": 5,
+      "Height": 5
+    },
+    "MyTurn": true
+  },
+  {
+    "Name": "PlayerB",
+    "Code": "B",
+    "Board": {
+      "Rows": [
+        {
+          "_row": [
+            {
+              "X": 0,
+              "Y": 0,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": true
+              }
+            },
+            {
+              "X": 1,
+              "Y": 0,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 2,
+              "Y": 0,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 3,
+              "Y": 0,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 4,
+              "Y": 0,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            }
+          ]
+        },
+        {
+          "_row": [
+            {
+              "X": 0,
+              "Y": 1,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 1,
+              "Y": 1,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": true
+              }
+            },
+            {
+              "X": 2,
+              "Y": 1,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 3,
+              "Y": 1,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 4,
+              "Y": 1,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            }
+          ]
+        },
+        {
+          "_row": [
+            {
+              "X": 0,
+              "Y": 2,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 1,
+              "Y": 2,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 2,
+              "Y": 2,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": true
+              }
+            },
+            {
+              "X": 3,
+              "Y": 2,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 4,
+              "Y": 2,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            }
+          ]
+        },
+        {
+          "_row": [
+            {
+              "X": 0,
+              "Y": 3,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 1,
+              "Y": 3,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 2,
+              "Y": 3,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 3,
+              "Y": 3,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 4,
+              "Y": 3,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            }
+          ]
+        },
+        {
+          "_row": [
+            {
+              "X": 0,
+              "Y": 4,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 1,
+              "Y": 4,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 2,
+              "Y": 4,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 3,
+              "Y": 4,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            },
+            {
+              "X": 4,
+              "Y": 4,
+              "BoardSquareState": {
+                "IsShip": false,
+                "IsBomb": false
+              }
+            }
+          ]
+        }
+      ],
+      "Ships": [],
+      "Width": 5,
+      "Height": 5
+    },
+    "MyTurn": false
+  }
+]
