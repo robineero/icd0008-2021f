@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics.Arm;
 using System.Text.Json;
 using System.Threading;
 using DAL;
@@ -13,7 +14,8 @@ namespace BattleShipBrain
         private Player _currentPlayer = default!;
         private Player _playerA = default!;
         private Player _playerB = default!;
-
+        private int GameId;
+        
         public void Run()
         {
             Console.Write("Continue previous game (Y/N): ");
@@ -23,14 +25,16 @@ namespace BattleShipBrain
             {
                 _playerA = LoadGameFromDatabase()!.First(x => x.Code == "A");
                 _playerB = LoadGameFromDatabase()!.First(x => x.Code == "B");
+                Console.WriteLine("Starting to play the game with Id: " + GameId);
             }
-            else
+            else // N - new game
             {
                 Config config = CreateConfig();
             
                 _playerA = new("A","PlayerA", new Board(config), true);
                 _playerA.Board.SetupNewBoard();
                 _playerB = new("B","PlayerB", new Board(config));
+                SaveGameToDatabase();
                 
             }
             
@@ -68,9 +72,8 @@ namespace BattleShipBrain
                 } while (true);
                 
                 // Autosave current state
-                SaveGameToDatabase(SerializeGame());
-                LoadGameFromDatabase();
-                
+                SaveGameToDatabase();
+
                 Console.Write("Continue playing this game (Y/N): ");
                 String continuePlay = Console.ReadLine()?.Trim().ToLower() ?? "";
                 if (continuePlay == "n")
@@ -97,25 +100,27 @@ namespace BattleShipBrain
             return new Config (width <= 5 ? 5: width, height <= 5 ? 5 : height);
         }
 
-        private void SaveGameToDatabase(string currentGame)
+        private void SaveGameToDatabase()
         {
             using var db = new AppDbContext();
-            if (!db.Games.Any())
+            if (GameId > 0) // Update game
             {
-                db.Games.Add(new Game()
-                {
-                    GameString = currentGame,
-                    UpdatedAt = DateTime.Now
-                });
-                db.SaveChanges();
-            }
-            else
-            {
-                var game = db.Games.FirstOrDefault();
+                var game = db.Games.FirstOrDefault(x => x.Id == GameId);
                 if (game == null) return;
-                game.GameString = currentGame;
                 game.UpdatedAt = DateTime.Now;
                 db.SaveChanges();
+                SaveSerializedPlayers(GameId);
+            }
+            else // Create new game
+            {
+                var game = new Game()
+                {
+                    UpdatedAt = DateTime.Now
+                };
+                db.Games.Add(game);
+                db.SaveChanges();
+                GameId = game.Id;
+                SaveSerializedPlayers(game.Id);
             }
         }
         
@@ -123,11 +128,20 @@ namespace BattleShipBrain
         {
             using var db = new AppDbContext();
 
-            var gameString = db.Games.FirstOrDefault()?.GameString ?? null;
-            if (gameString != null)
+            var gameId = db.Games.OrderByDescending(x => x.UpdatedAt).FirstOrDefault()?.Id;
+            if (gameId != null)
             {
-                List<Player>? game = JsonSerializer.Deserialize<List<Player>>(gameString);
-                return game;
+                GameId = gameId.Value;
+                List<Player?> players = new();
+
+                var queryable = db.Players.Where(x => x.GameId == gameId);
+                foreach (var q in queryable)
+                {
+                    if (q.PlayerString != null) players.Add(JsonSerializer.Deserialize<BattleShipBrain.Player>(q.PlayerString));
+                    
+                }
+                
+                return players;
             }
             
             throw new Exception("Game file is not available for deserialization");
@@ -151,21 +165,30 @@ namespace BattleShipBrain
             
             Console.WriteLine("\n\n");
         }
-
-        private string SerializeGame()
-        {
-            List<Player> game = new()
-            {
-                _playerA, _playerB
-            };
-
-            var jsonOptions = new JsonSerializerOptions()
-            {
-                WriteIndented = false
-            };
-            
-            return JsonSerializer.Serialize(game, jsonOptions);
-        }
         
+        
+        private void SaveSerializedPlayers(int gameId)
+        {
+            using var db = new AppDbContext();
+            var players = db.Players.Where(x => x.GameId == gameId);
+            if (players.Count() != 0)
+            {
+                foreach (var p in players)
+                {
+                    db.Players.Remove(p);
+                }
+            }
+            db.Players.Add(new Domain.Player()
+            {
+                PlayerString = JsonSerializer.Serialize(_playerA),
+                GameId = gameId
+            });
+            db.Players.Add(new Domain.Player()
+            {
+                PlayerString = JsonSerializer.Serialize(_playerB),
+                GameId = gameId
+            });
+            db.SaveChanges();
+        }
     }
 }
