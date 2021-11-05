@@ -19,7 +19,7 @@ namespace BattleShipBrain
         private List<Coordinate> GetCoordinates(int x, int y, ShipType type, ShipDirection direction)
         {
             List<Coordinate> coordinates = new();
-            for (int i = 0; i < (int) type; i++)  // sorry for the cast
+            for (int i = 0; i < (int) type; i++)  // sorry for the cast to get Enum to int
             {
                 if (direction == ShipDirection.NorthSouth)
                     coordinates.Add(new Coordinate(x, y + i));

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 namespace BattleShipBrain
@@ -8,8 +9,8 @@ namespace BattleShipBrain
     {
         public List<Row> Rows { get; set; } = new();
         public List<Ship> Ships { get; set; } = new();
-        public int Width { get; set;  }
-        public int Height { get; set;  }
+        public int Width { get; set; }
+        public int Height { get; set; }
 
         public Board()
         {
@@ -155,23 +156,23 @@ namespace BattleShipBrain
             ShipFactory shipFactory = new ();
             Dictionary<ShipType, String> names = new()
             {
-                { ShipType.Carrier, "Carrier (1x5)" },
-                { ShipType.Battleship, "Battleship (1x4)" },
+                // { ShipType.Carrier, "Carrier (1x5)" },
+                // { ShipType.Battleship, "Battleship (1x4)" },
                 // { ShipType.Submarine, "Submarine (1x3)" },
-                // { ShipType.Cruiser, "Cruiser (1x2)" },
-                // { ShipType.Patrol, "Patrol (1x1)" },
+                { ShipType.Cruiser, "Cruiser (1x2)" },
+                { ShipType.Patrol, "Patrol (1x1)" },
             };
 
             foreach (var name in names)
             {
-                int row = -1;
-                int col = -1;
+                Ship ship;
+                int row;
+                int col;
                 string input;
                 ShipDirection direction = ShipDirection.NorthSouth;
                 Console.WriteLine(ToString());
                 Console.WriteLine($"Enter coordinates for {name.Value} ship");
-
-
+                
                 while (true)
                 {
                     Console.Write("Col: ");
@@ -181,20 +182,23 @@ namespace BattleShipBrain
                     Console.Write("Row: ");
                     input = Console.ReadLine()?.Trim() ?? "";
                     row = input == "" ? -1 : Int32.Parse(input);
+                    
+                    Console.Write("Direction (NS*/EW): ");
+                    input = Console.ReadLine()?.Trim().ToLower() ?? "";
+                    direction = input == "ew" ? ShipDirection.EastWest : ShipDirection.NorthSouth;
+                    ship = shipFactory.GetShip(col, row, name.Key, direction);
 
-                    if (row >= 0 && col >= 0)
+                    if (row >= 0 && col >= 0 && col < Width && row < Height)
                     {
-                        break;
+                        if (direction == ShipDirection.NorthSouth && row <= Height - ship.Coordinates.Count())
+                            break;
+                        if (direction == ShipDirection.EastWest && row <= Width - ship.Coordinates.Count())
+                            break;
                     }
                     Console.WriteLine("Something went wrong with the input. Try again.");
 
                 }
-                
-                Console.Write("Direction (NS*/EW): ");
-                input = Console.ReadLine()?.Trim().ToLower() ?? "";
-                direction = input == "ew" ? ShipDirection.EastWest : ShipDirection.NorthSouth;
-                
-                Ship ship = shipFactory.GetShip(col, row, name.Key, direction);
+
                 AddShip(ship);  // TODO: This step needs validation for ArgumentOutOfRangeException
             }
 

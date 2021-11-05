@@ -22,14 +22,21 @@ namespace BattleShipBrain
 
             if (continuePrevious == "y") // Load previous
             {
-                Console.WriteLine("Id\tLast played");
-                foreach (var game in LoadGamesFromDatabase())
-                    Console.WriteLine($"{game.Id})\t{game.UpdatedAt}");
-                Console.Write("Which game do you want to play: ");
-                Int32.TryParse(Console.ReadLine()?.Trim(), out var choice);
-
-                LoadPlayersFromDatabase(choice);
+                int choice;
+                do
+                {
+                    Console.WriteLine("Id\tLast played");
+                    var games = LoadGamesFromDatabase();
+                    foreach (var game in games)
+                        Console.WriteLine($"{game.Id})\t{game.UpdatedAt}");
+                    Console.Write("Which game do you want to play: ");
+                    Int32.TryParse(Console.ReadLine()?.Trim(), out choice);
+                    
+                    if (games.Any(x => x.Id == choice)) break;
+                    
+                } while (true);
                 
+                LoadPlayersFromDatabase(choice);
                 Console.WriteLine("Starting to play the game with Id: " + _gameId);
             }
             else // N - new game
