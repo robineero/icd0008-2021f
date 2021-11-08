@@ -1,10 +1,10 @@
-### HW04 - BattleShip
-**Deadline: 22021-11-04 23:59:59**
+**Rebuild db**
 
-In addition to saving your settings and gameboard as json files support also saving and loading from database.  
-Hint: to save board into database - serialize it into string and keep it as a string in db.
+~~~bash
 
-TODO:
+dotnet ef database --project DAL --startup-project WebApp drop -f
+dotnet ef migrations remove --project DAL --startup-project WebApp
+dotnet ef migrations --project DAL --startup-project WebApp add InitialMigrate
+dotnet ef database --project DAL --startup-project WebApp update
 
-- Loading from last three games
-- Protect against getting index out of range (when setting boards)
+~~~

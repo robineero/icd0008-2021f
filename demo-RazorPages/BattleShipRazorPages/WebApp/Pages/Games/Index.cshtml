@@ -1,5 +1,5 @@
 @page
-@model WebApp.Pages_Games.IndexModel
+@model WebApp.Pages.Games.IndexModel
 
 @{
     ViewData["Title"] = "Index";
@@ -12,31 +12,58 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Game[0].Comment)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Game[0].CreatedAt)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            Id
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Games[0].Comment)
+        </th>
+
+        <th>
+            Player A
+        </th>
+        <th>
+            Player B
+        </th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Game) {
+    @foreach (var item in Model.Games)
+    {
+        var playerA = item.Players!.FirstOrDefault(x => x.Code == 'A')!;
+        var playerB = item.Players!.FirstOrDefault(x => x.Code == 'B')!;
+        
         <tr>
+            <td>@item.Id</td>
             <td>
-                @Html.DisplayFor(modelItem => item.Comment)
+                @item.Comment<br>
+                <small>
+                    <strong>Last move:</strong> @item.UpdatedAt<br/>
+                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                </small>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
+                @playerA.Name
+                
+                @if (playerA.NextMove)
+                {
+                    <a asp-page="/Games/Play/Index" asp-route-id="@item.Id">Play</a>
+                }
+                
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                @playerB.Name
+                
+                @if (playerB.NextMove)
+                {
+                    <a asp-page="/Games/Play/Index" asp-route-id="@item.Id">Play</a>
+                }
+                
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

@@ -1,0 +1,24 @@
+@page
+@model WebApp.Pages.Games.Play.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    var x = 0;
+}
+
+<h1>Play this game</h1>
+
+<p>Board is iterated here and redirected to games after that.</p>
+
+<table class="table-bordered">
+    
+    
+    @foreach (var square in Model.Board!)
+    {
+        var s = square == "" ? "_" : "x";
+        <td onclick="window.location='?x=@x&id=@Model.GameId&move=true'" style="height: 40px; width: 40px;cursor: pointer;">@s</td>
+        x++;
+    }
+    
+</table>
+

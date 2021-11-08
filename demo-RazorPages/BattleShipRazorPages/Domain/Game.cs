@@ -7,8 +7,9 @@ namespace Domain
     {
         public int Id { get; set; }
         public String? Comment { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
-        public ICollection<Player>? Players { get; set; }
+        public List<Player>? Players { get; set; }
     }
 }

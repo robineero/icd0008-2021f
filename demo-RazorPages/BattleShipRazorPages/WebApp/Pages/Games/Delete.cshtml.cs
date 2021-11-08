@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using DAL;
 using Domain;
@@ -45,6 +46,12 @@ namespace WebApp.Pages.Games
 
             if (Game != null)
             {
+                var players = _context.Players.Where(x => x.GameId == id);
+                foreach (var player in players)
+                {
+                    _context.Players.Remove(player);
+                    
+                }
                 _context.Games.Remove(Game);
                 await _context.SaveChangesAsync();
             }
