@@ -1,0 +1,24 @@
+﻿@page
+@model TestModel
+
+@{
+    ViewData["Title"] = "Test page";
+}
+
+
+<h1>Test page</h1>
+
+<p>
+    <a href="?name=robert&age=7">get request</a>
+</p>
+<p>
+    @Model.Greeting
+</p>
+
+<form method="get">
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" name="name" id="name" >
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
