@@ -23,9 +23,9 @@ Installime sellise asja nagu UI scaffolding tool:
 **Migrate:** `dotnet ef migrations --project DAL --startup-project ConsoleApp add InitialMigrate`
 - reads from AppDbContext how the db should look like (same thing as InitialCreate).
 
-**Update:** `dotnet ef database --project DAL --startup-project ConsoleApp update`    
+**Update:** `dotnet ef database --project DAL --startup-project WebApp update`    
 **Remove:** `dotnet ef migrations remove --project DAL --startup-project WebApp`  
-**Drop**: `dotnet ef database --project DAL --startup-project ConsoleApp drop -f`
+**Drop**: `dotnet ef database --project DAL --startup-project WebApp drop -f`
 
 #### Database connection strings
 
@@ -34,6 +34,10 @@ Barrel: `"Server=barrel.itcollege.ee,1533;User Id=student;Password=Student.Bad.p
 Minu oma: `"Server=vps.that.ee,1433;User Id=sa;Password=pass;Database=dbname;MultipleActiveResultSets=true"`
 
 #### Scaffold
+
+Scaffolding Razor pages (in /WebApp dir)
+
+`dotnet aspnet-codegenerator razorpage -m Game -dc AppDbContext -udl -outDir Pages/Games --referenceScriptLibraries`
 
 To create html controllers in the WebApp folder run:
 

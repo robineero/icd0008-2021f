@@ -8,6 +8,10 @@ ProjectSection(SolutionItems) = preProject
 	readme.md = readme.md
 EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{315455A2-5BC5-4A2B-969D-678BC27D8C5C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{50119347-09FF-43C3-A162-1FCC62D20A57}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{9B2337DC-366E-4FBC-8A87-C17D5A76AF13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B2337DC-366E-4FBC-8A87-C17D5A76AF13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B2337DC-366E-4FBC-8A87-C17D5A76AF13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{315455A2-5BC5-4A2B-969D-678BC27D8C5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{315455A2-5BC5-4A2B-969D-678BC27D8C5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{315455A2-5BC5-4A2B-969D-678BC27D8C5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{315455A2-5BC5-4A2B-969D-678BC27D8C5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50119347-09FF-43C3-A162-1FCC62D20A57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50119347-09FF-43C3-A162-1FCC62D20A57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50119347-09FF-43C3-A162-1FCC62D20A57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50119347-09FF-43C3-A162-1FCC62D20A57}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
