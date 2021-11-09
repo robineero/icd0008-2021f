@@ -1,9 +1,20 @@
 @page
+@using System.Text.Json
+@using BattleshipBrain
 @model WebApp.Pages.Games.Play.IndexModel
+
+<style>    
+   .bs-cell {
+       height: 40px; 
+       width: 40px;
+       cursor: pointer;
+   }
+</style>
 
 @{
     ViewData["Title"] = "Index";
-    var x = 0;
+    String boardJson = JsonSerializer.Serialize(Model.Board);
+    BoardSquareState bss;
 }
 
 <h1>Play this game</h1>
@@ -12,13 +23,28 @@
 
 <table class="table-bordered">
     
-    
-    @foreach (var square in Model.Board!)
+    @foreach (var row in Model.Board.Rows!)
     {
-        var s = square == "" ? "_" : "x";
-        <td onclick="window.location='?x=@x&id=@Model.GameId&move=true'" style="height: 40px; width: 40px;cursor: pointer;">@s</td>
-        x++;
+        <tr>
+                @foreach (var coord in row.Coordinates)
+                {
+                    bss = coord.BoardSquareState;
+                    <td onclick="window.location='?x=@coord.X&y=@coord.Y&id=@Model.GameId&move=true'" class="bs-cell">
+                        
+                        @if (bss.IsBomb)
+                        {
+                            <text>on pomm</text>
+                        }
+                        else
+                        {
+                            <text>x: @coord.X <br/>y: @coord.Y</text>
+                        }
+                    </td>
+                }
+        </tr>
+
     }
     
 </table>
 
+@* @boardJson; *@

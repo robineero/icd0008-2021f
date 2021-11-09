@@ -21,7 +21,11 @@
                 
                 <label asp-for="PlayerB.Name" class="control-label">Player A</label>
                 <input asp-for="PlayerB.Name" class="form-control" value="Player B @Guid.NewGuid()" />
-                <span asp-validation-for="PlayerB.Name" class="text-danger"></span>
+                <span asp-validation-for="PlayerB.Name" class="text-danger"></span>                
+                
+                <label asp-for="Game.BoardSize" class="control-label"></label>
+                <input asp-for="Game.BoardSize" class="form-control" value="5" />
+                <span asp-validation-for="Game.BoardSize" class="text-danger"></span>
                 
                 <label asp-for="Game.Comment" class="control-label"></label>
                 <input asp-for="Game.Comment" class="form-control" value="@Guid.NewGuid()" />

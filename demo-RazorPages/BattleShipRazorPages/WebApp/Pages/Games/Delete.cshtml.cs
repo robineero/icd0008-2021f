@@ -21,18 +21,21 @@ namespace WebApp.Pages.Games
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Game = await _context.Games.FirstOrDefaultAsync(m => m.Id == id);
-
-            if (Game == null)
-            {
-                return NotFound();
-            }
-            return Page();
+            // if (id == null)
+            // {
+            //     return NotFound();
+            // }
+            //
+            // Game = await _context.Games.FirstOrDefaultAsync(m => m.Id == id);
+            //
+            // if (Game == null)
+            // {
+            //     return NotFound();
+            // }
+            
+            await OnPostAsync(id);
+            return RedirectToPage("./Index");
+            // return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int? id)
