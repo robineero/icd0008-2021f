@@ -8,12 +8,18 @@
        height: 40px; 
        width: 40px;
        cursor: pointer;
+       text-align: center;
+       vertical-align: middle;
    }
-   .bomb {
-        background-color: #b6e6ff;
+   .miss {
+        background-color: #e9e9e9;
    }   
    .ship {
         background-color: #8fff78;
+   }   
+   .hit {
+        background-color: #1f1f1f;
+        color: white;
    }
    
 
@@ -22,58 +28,100 @@
 
 @{
     ViewData["Title"] = "Index";
-    String boardJson = JsonSerializer.Serialize(Model.Board);
-    String isBomb = "";
     String isShip = "";
+    String isHit = "";
+    String isMiss = "";
     BoardSquareState bss;
+    Board boardCurrent = JsonSerializer.Deserialize<Board>(@Model.PlayerCurrent.Board!)!;
+    Board boardOpponent = JsonSerializer.Deserialize<Board>(@Model.PlayerOpponent.Board!)!;
     
 }
 
-<h1>Play this game</h1>
-
-<p>Board is iterated here and redirected to games after that.</p>
+<h1>Play this game, @Model.PlayerCurrent.Name</h1>
 
 <div class="row">
     <div class="col-6">
         
+        <p>This is opponent's board but you play with it. This is <strong>active board.</strong></p>
+        <ul>
+            <li>You see placed bombs and hits (if was hit)</li>
+            <li>Opponent ships are hidden</li>
+            <li>Below the table would be nice to have move history (like in chess)</li>
+        </ul>
+        
         <table class="table-bordered">
-            
-            @foreach (var row in Model.Board.Rows!)
+
+            @foreach (var row in boardOpponent.Rows)
             {
                 <tr>
-                    
+
                     @foreach (var coord in row.Coordinates)
                     {
                         bss = coord.BoardSquareState;
-                        isBomb = coord.BoardSquareState.IsBomb ? "bomb" : "";
-                        isShip = coord.BoardSquareState.IsShip ? "ship" : "";
-                        <td onclick="window.location='?x=@coord.X&y=@coord.Y&id=@Model.GameId&move=true'" class="bs-cell @isBomb @isShip">
-        
-                            @if (bss.IsBomb)
+                        isHit = bss.IsBomb && bss.IsShip ? "hit" : "";
+                        isMiss = bss.IsBomb && !bss.IsShip ? "miss" : "";
+
+                        <td onclick="window.location='?x=@coord.X&y=@coord.Y&id=@Model.PlayerOpponent.GameId&move=true'" class="bs-cell @isMiss @isHit">
+
+                            @if (bss.IsBomb && !bss.IsShip)
                             {
-                                <text>bomb</text>
+                                <text><small>miss</small></text>
+                            } 
+                            @if (bss.IsBomb && bss.IsShip) {
+                                <text><small>hit</small></text>
                             }
-                            else
-                            {
-                                <text>x: @coord.X <br/>y: @coord.Y</text>
-                            }
+                            
                         </td>
                     }
                 </tr>
-        
+
             }
-            
+
         </table>
+
+    </div>
+    
+    <div class="col-6">
         
+        <p>This <strong>your board</strong> but your opponent plays on it. This is <strong>passive board</strong> for you. Just for watching.</p>
+        <ul>
+            <li>You see ships, bombs and hits (if was hit)</li>
+            <li>Your ships are visible</li>
+            <li>Below the table would be nice to have move history (like in chess)</li>
+        </ul>
+        
+        <table class="table-bordered">
+        
+            @foreach (var row in boardCurrent.Rows)
+            {
+                <tr>
+
+                    @foreach (var coord in row.Coordinates)
+                    {
+                        bss = coord.BoardSquareState;
+                        isShip = !bss.IsBomb && bss.IsShip ? "ship" : "";
+                        isHit = bss.IsBomb && bss.IsShip ? "hit" : "";
+                        isMiss = bss.IsBomb && !bss.IsShip ? "miss" : "";
+                        
+                        <td class="bs-cell @isMiss @isShip @isHit">
+
+                            @if (bss.IsBomb && bss.IsShip)
+                            {
+                                <text><small>hit</small></text>
+                            } else if (bss.IsBomb && !bss.IsShip) {
+                                <text><small>miss</small></text>
+                            } else if (!bss.IsBomb && bss.IsShip) {
+                                <text><small>ship</small></text>
+                            } else {
+                                <text></text>
+                            }
+                            
+                        </td>
+                    }
+                </tr>
+            }
+
+        </table>
     </div>
 
 </div>
-
-
-@* @boardJson; *@
-
-
-
-    
-
-    

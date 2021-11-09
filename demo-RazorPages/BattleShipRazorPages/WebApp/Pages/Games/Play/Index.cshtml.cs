@@ -19,36 +19,37 @@ namespace WebApp.Pages.Games.Play
             _context = context;
         }
 
-        public BattleshipBrain.Board Board { get; set; } = default!;
-        public int GameId { get; set; }
-        
+        public Board Board { get; set; } = default!;
+        public Player Player { get; set; } = default!;
+        public Player PlayerCurrent { get; set; } = default!;
+        public Player PlayerOpponent { get; set; } = default!;
+
         public IActionResult OnGetAsync(int id, int x, int y, bool move)
         {
-            GameId = id;
             if (move)
             {
                 List<Player> player = _context.Players.Where(p => p.GameId == id).ToList();
                 Game game = _context.Games.FirstOrDefault(g => g.Id == id)!;
                 game.UpdatedAt = DateTime.Now;
                 //
-                Player current = player.FirstOrDefault(nm => nm.NextMove == true)!;
-                Player next = player.FirstOrDefault(nm => nm.NextMove == false)!;
+                Player current = player.FirstOrDefault(nm => nm.NextMove)!;
+                Player next = player.FirstOrDefault(nm => !nm.NextMove)!;
+                Player = current;
                 current.NextMove = !current.NextMove;
                 next.NextMove = !next.NextMove;
                 //
-                Board = JsonSerializer.Deserialize<Board>(current.Board!)!;
+                Board = JsonSerializer.Deserialize<Board>(next.Board!)!;
                 Board.PlaceBomb(x, y);
-                current.Board = JsonSerializer.Serialize(Board);
+                next.Board = JsonSerializer.Serialize(Board);
                 _context.SaveChanges();
                 
                 return RedirectToPage("/Games/Index");
             }
             else
             {
-                Player player = _context.Players.FirstOrDefault(x => x.GameId == id && x.NextMove == true)!;
-                String board = player.Board!;
-                Board = JsonSerializer.Deserialize<Board>(board)!;
-            
+                PlayerCurrent = _context.Players.FirstOrDefault(x => x.GameId == id && x.NextMove == true)!;
+                PlayerOpponent = _context.Players.FirstOrDefault(x => x.GameId == id && x.NextMove == false)!;
+                
                 return Page();
             }
         }

@@ -19,6 +19,8 @@
 <div class="col-6">
         
     <h1>Board for @Model.Player.Name</h1>
+    
+    <p>This your board, where you place your ships. Your opponent will play on it (without seeing your ships).</p>
 
     <form method="post">
         
@@ -32,10 +34,13 @@
         @foreach (var row in Model.Board.Rows!)
         {
             <div class="row">
-                @foreach (var coord in row.Coordinates)
-                {
-                    <label><input class="form-check-input" name="Ships" id="xx" type="checkbox" value="@coord.X-@coord.Y" checked="@coord.BoardSquareState.IsShip"></label>
-                }
+                
+                    @foreach (var coord in row.Coordinates)
+                    {
+                        <label>
+                            <input class="form-check-input" name="Ships" id="xx" type="checkbox" value="@coord.X-@coord.Y" checked="@coord.BoardSquareState.IsShip">
+                        </label>
+                    }
             </div>
         }
 

@@ -50,9 +50,11 @@
                 
                 @if (playerA.NextMove)
                 {
-                    <a asp-page="/Games/Play/Index" asp-route-id="@item.Id">Play</a><text> | </text>  
-                    <a asp-page="/Games/Setup" asp-route-id="@item.Id" asp-route-playerId="@playerA.Id">Setup</a>
+                    <a asp-page="/Games/Play/Index" asp-route-id="@item.Id">Play</a><br>
+                    
                 }
+                
+                <a asp-page="/Games/Setup" asp-route-playerId="@playerA.Id">Setup</a>
                 
             </td>
             <td>
@@ -60,8 +62,9 @@
                 
                 @if (playerB.NextMove)
                 {
-                    <a asp-page="/Games/Play/Index" asp-route-id="@item.Id">Play</a>
+                    <a asp-page="/Games/Play/Index" asp-route-id="@item.Id">Play</a><br>
                 }
+                <a asp-page="/Games/Setup" asp-route-playerId="@playerB.Id">Setup</a>
                 
             </td>
         </tr>
