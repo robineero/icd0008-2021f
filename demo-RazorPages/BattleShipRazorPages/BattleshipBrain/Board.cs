@@ -31,6 +31,12 @@ namespace BattleshipBrain
             Rows[y].Coordinates[x] = CoordinateFactory(x, y, true, false);
         }
         
+        public void PlaceShip(int x, int y)
+        {
+            BoardSquareState state = Rows[y].Coordinates[x].BoardSquareState;
+            Rows[y].Coordinates[x] = CoordinateFactory(x, y, false, true);
+        }
+        
         public Coordinate CoordinateFactory(int x, int y, bool isBomb, bool isShip)
         {
             BoardSquareState newState = new BoardSquareState()

@@ -9,42 +9,71 @@
        width: 40px;
        cursor: pointer;
    }
+   .bomb {
+        background-color: #b6e6ff;
+   }   
+   .ship {
+        background-color: #8fff78;
+   }
+   
+
+       
 </style>
 
 @{
     ViewData["Title"] = "Index";
     String boardJson = JsonSerializer.Serialize(Model.Board);
+    String isBomb = "";
+    String isShip = "";
     BoardSquareState bss;
+    
 }
 
 <h1>Play this game</h1>
 
 <p>Board is iterated here and redirected to games after that.</p>
 
-<table class="table-bordered">
-    
-    @foreach (var row in Model.Board.Rows!)
-    {
-        <tr>
-                @foreach (var coord in row.Coordinates)
-                {
-                    bss = coord.BoardSquareState;
-                    <td onclick="window.location='?x=@coord.X&y=@coord.Y&id=@Model.GameId&move=true'" class="bs-cell">
-                        
-                        @if (bss.IsBomb)
-                        {
-                            <text>on pomm</text>
-                        }
-                        else
-                        {
-                            <text>x: @coord.X <br/>y: @coord.Y</text>
-                        }
-                    </td>
-                }
-        </tr>
+<div class="row">
+    <div class="col-6">
+        
+        <table class="table-bordered">
+            
+            @foreach (var row in Model.Board.Rows!)
+            {
+                <tr>
+                    
+                    @foreach (var coord in row.Coordinates)
+                    {
+                        bss = coord.BoardSquareState;
+                        isBomb = coord.BoardSquareState.IsBomb ? "bomb" : "";
+                        isShip = coord.BoardSquareState.IsShip ? "ship" : "";
+                        <td onclick="window.location='?x=@coord.X&y=@coord.Y&id=@Model.GameId&move=true'" class="bs-cell @isBomb @isShip">
+        
+                            @if (bss.IsBomb)
+                            {
+                                <text>bomb</text>
+                            }
+                            else
+                            {
+                                <text>x: @coord.X <br/>y: @coord.Y</text>
+                            }
+                        </td>
+                    }
+                </tr>
+        
+            }
+            
+        </table>
+        
+    </div>
 
-    }
-    
-</table>
+</div>
+
 
 @* @boardJson; *@
+
+
+
+    
+
+    
