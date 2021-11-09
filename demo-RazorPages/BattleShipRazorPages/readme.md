@@ -8,3 +8,6 @@ dotnet ef migrations --project DAL --startup-project WebApp add InitialMigrate
 dotnet ef database --project DAL --startup-project WebApp update
 
 ~~~
+
+
+@(coord.BoardSquareState.IsShip ? "checked" : ""

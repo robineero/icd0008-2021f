@@ -34,7 +34,7 @@
             <div class="row">
                 @foreach (var coord in row.Coordinates)
                 {
-                    <label><input class="form-check-input" name="Ships" id="xx" type="checkbox" value="@coord.X-@coord.Y" @(coord.BoardSquareState.IsShip ? "checked" : "")></label>
+                    <label><input class="form-check-input" name="Ships" id="xx" type="checkbox" value="@coord.X-@coord.Y" checked="@coord.BoardSquareState.IsShip"></label>
                 }
             </div>
         }

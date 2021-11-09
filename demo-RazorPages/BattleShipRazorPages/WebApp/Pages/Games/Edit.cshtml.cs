@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using DAL;
 using Domain;
 
-namespace WebApp.Pages_Games
+namespace WebApp.Pages.Games
 {
     public class EditModel : PageModel
     {
