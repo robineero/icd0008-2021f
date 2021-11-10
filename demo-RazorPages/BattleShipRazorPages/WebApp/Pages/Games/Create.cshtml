@@ -16,19 +16,19 @@
             <div class="form-group">
                 
                 <label asp-for="PlayerA.Name" class="control-label">Player A (starts the game)</label>
-                <input asp-for="PlayerA.Name" class="form-control" value="Player A @Guid.NewGuid()" />
+                <input asp-for="PlayerA.Name" class="form-control" value="Alice" />
                 <span asp-validation-for="PlayerA.Name" class="text-danger"></span>
                 
                 <label asp-for="PlayerB.Name" class="control-label">Player A</label>
-                <input asp-for="PlayerB.Name" class="form-control" value="Player B @Guid.NewGuid()" />
+                <input asp-for="PlayerB.Name" class="form-control" value="Bob" />
                 <span asp-validation-for="PlayerB.Name" class="text-danger"></span>                
                 
                 <label asp-for="Game.BoardSize" class="control-label"></label>
-                <input asp-for="Game.BoardSize" class="form-control" value="5" />
+                <input asp-for="Game.BoardSize" class="form-control" value="10" />
                 <span asp-validation-for="Game.BoardSize" class="text-danger"></span>
                 
                 <label asp-for="Game.Comment" class="control-label"></label>
-                <input asp-for="Game.Comment" class="form-control" value="@Guid.NewGuid()" />
+                <input asp-for="Game.Comment" class="form-control" value="10x10 board" />
                 <span asp-validation-for="Game.Comment" class="text-danger"></span>
                 
             </div>

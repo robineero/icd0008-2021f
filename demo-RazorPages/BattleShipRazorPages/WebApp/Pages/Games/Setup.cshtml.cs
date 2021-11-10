@@ -8,6 +8,7 @@ using DAL;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.Pages.Games
 {
@@ -22,19 +23,23 @@ namespace WebApp.Pages.Games
             _context = context;
         }
 
-        public IActionResult OnGet(int id, int playerId)
+        public IActionResult OnGet(int playerId)
         {
             Player = _context.Players.FirstOrDefault(x => x.Id == playerId)!;
-            Board = JsonSerializer.Deserialize<Board>(Player.Board!)!;
-            
-            return Page();
+            Game game = _context.Games.FirstOrDefault(x => x.Id == Player.GameId)!;
+            if (!game.HasStarted)
+            {
+                Board = JsonSerializer.Deserialize<Board>(Player.Board!)!;
+                return Page();
+            }
+            return RedirectToPage("./Index");
         }
 
         [BindProperty] public List<string>? Ships { get; set;  }
         [BindProperty] public string? TestCheckbox { get; set; }
         [BindProperty] public int? PlayerId { get; set; }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
             Console.WriteLine($"Test: {TestCheckbox}");
             Console.WriteLine($"Count: {Ships!.Count}.  {string.Join(", ", Ships)}");
@@ -42,8 +47,13 @@ namespace WebApp.Pages.Games
 
             if (Ships.Count != 0)
             {
-                Player = _context.Players.FirstOrDefault(x => x.Id == PlayerId)!;
-                Board = JsonSerializer.Deserialize<Board>(Player.Board!)!;
+                Player = await _context
+                    .Players
+                    .Include(x => x.Game)
+                    .FirstOrDefaultAsync(x => x.Id == PlayerId)!;
+                
+                Config conf = new (Player.Game!.BoardSize, Player.Game!.BoardSize);
+                Board = new Board(conf);
 
                 foreach (var ship in Ships)
                 {
@@ -55,7 +65,7 @@ namespace WebApp.Pages.Games
                 }
 
                 Player.Board = JsonSerializer.Serialize(Board);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
             
             return RedirectToPage("./Index");

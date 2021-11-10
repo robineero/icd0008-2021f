@@ -30,7 +30,6 @@
             </div>
         </div>
         
-        @* <input asp-for="TestCheckbox"> *@
         @foreach (var row in Model.Board.Rows!)
         {
             <div class="row">
@@ -45,7 +44,7 @@
         }
 
         <div class="form-group">
-            <input asp-for="@Model.Player.Id" />
+            <input class="form-control" asp-for="@Model.Player.Id" readonly />
         </div>
 
         <div class="form-group">

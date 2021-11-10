@@ -8,7 +8,7 @@ namespace Domain
         public int Id { get; set; }
 
         [Required]
-        [MinLength(4, ErrorMessage = "The {0} value not be less than {1} characters. ")]
+        [MinLength(2, ErrorMessage = "The {0} value not be less than {1} characters. ")]
         [MaxLength(128, ErrorMessage = "The {0} value cannot exceed {1} characters. ")]
         public String Name { get; set; } = default!;
         public String? Board { get; set; } // serialized json

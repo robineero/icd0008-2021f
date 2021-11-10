@@ -22,8 +22,6 @@
         color: white;
    }
    
-
-       
 </style>
 
 @{
@@ -61,7 +59,7 @@
                         isHit = bss.IsBomb && bss.IsShip ? "hit" : "";
                         isMiss = bss.IsBomb && !bss.IsShip ? "miss" : "";
 
-                        <td onclick="window.location='?x=@coord.X&y=@coord.Y&id=@Model.PlayerOpponent.GameId&move=true'" class="bs-cell @isMiss @isHit">
+                        <td onclick="window.location='?x=@coord.X&y=@coord.Y&gameid=@Model.PlayerOpponent.GameId&move=true'" class="bs-cell @isMiss @isHit">
 
                             @if (bss.IsBomb && !bss.IsShip)
                             {

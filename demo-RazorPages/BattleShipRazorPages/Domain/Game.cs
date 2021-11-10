@@ -8,9 +8,12 @@ namespace Domain
     {
         public int Id { get; set; }
         
-        [Range(5, 100, ErrorMessage = "Board size must be between 5 and 100.")]
+        [Range(5, 50, ErrorMessage = "Board size must be between 5 and 100.")]
         public int BoardSize { get; set; }
         public String? Comment { get; set; }
+        
+        public bool HasStarted { get; set; }
+        public bool IsOver { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
 

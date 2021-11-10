@@ -33,6 +33,7 @@
     {
         var playerA = item.Players!.FirstOrDefault(x => x.Code == 'A')!;
         var playerB = item.Players!.FirstOrDefault(x => x.Code == 'B')!;
+        var hadStarted = item.HasStarted;
         
         <tr>
             <td>@item.Id</td>
@@ -50,11 +51,13 @@
                 
                 @if (playerA.NextMove)
                 {
-                    <a asp-page="/Games/Play/Index" asp-route-id="@item.Id">Play</a><br>
+                    <a asp-page="/Games/Play/Index" asp-route-gameid="@item.Id">Play</a><br>
                     
                 }
-                
-                <a asp-page="/Games/Setup" asp-route-playerId="@playerA.Id">Setup</a>
+                @if (!hadStarted)
+                {
+                    <a asp-page="/Games/Setup" asp-route-playerId="@playerA.Id">Setup</a>
+                }
                 
             </td>
             <td>
@@ -62,9 +65,12 @@
                 
                 @if (playerB.NextMove)
                 {
-                    <a asp-page="/Games/Play/Index" asp-route-id="@item.Id">Play</a><br>
+                    <a asp-page="/Games/Play/Index" asp-route-gameid="@item.Id">Play</a><br>
                 }
-                <a asp-page="/Games/Setup" asp-route-playerId="@playerB.Id">Setup</a>
+                @if (!hadStarted)
+                {
+                    <a asp-page="/Games/Setup" asp-route-playerId="@playerB.Id">Setup</a>
+                }
                 
             </td>
         </tr>
