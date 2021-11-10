@@ -8,7 +8,7 @@ namespace Domain
     {
         public int Id { get; set; }
         
-        [Range(5, 50, ErrorMessage = "Board size must be between 5 and 100.")]
+        [Range(5, 50, ErrorMessage = "{0} must be between {1} and {2}.")]
         public int BoardSize { get; set; }
         public String? Comment { get; set; }
         

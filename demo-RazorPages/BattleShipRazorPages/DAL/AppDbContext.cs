@@ -7,16 +7,17 @@ namespace DAL
 {
     public class AppDbContext : DbContext
     {
-        private static string db = "hw05-razor";
-        private static string ConnectionString =
-            $"Server=vps.that.ee,1433;User Id=sa;Password=Robert.xnjj.1;Database={db};MultipleActiveResultSets=true";
+        private const string Db = "hw05-razor";
+        private static readonly string MssqlConnectionString = $"Server=vps.that.ee,1433;User Id=sa;Password=Robert.xnjj.1;Database={Db};MultipleActiveResultSets=true";
+        private static readonly string PostgresqlConnectionString = $"Server=vps.that.ee;Port=5432;Database={Db};User Id=razor;Password=2q5t;";
         public DbSet<Game> Games { get; set; } = default!;
         public DbSet<Player> Players { get; set; } = default!;
 
         // not recommended - do not hardcode DB conf!
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(ConnectionString);
+            // optionsBuilder.UseSqlServer(MssqlConnectionString);
+            optionsBuilder.UseNpgsql(PostgresqlConnectionString);
         }
         
         protected override void OnModelCreating(ModelBuilder builder)
