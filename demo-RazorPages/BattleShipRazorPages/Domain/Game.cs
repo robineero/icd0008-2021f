@@ -12,8 +12,8 @@ namespace Domain
         public int BoardSize { get; set; }
         public String? Comment { get; set; }
         
-        public bool HasStarted { get; set; }
-        public bool IsOver { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
 

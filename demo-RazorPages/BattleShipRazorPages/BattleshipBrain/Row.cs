@@ -7,6 +7,7 @@ namespace BattleshipBrain
     {
         public List<Coordinate> Coordinates { get; set; } = new();
         private readonly Random _random = new Random();
+        private readonly int _width;
         
         public Row()
         {
@@ -14,6 +15,8 @@ namespace BattleshipBrain
 
         public Row(int rowNr, int width, bool random = false)
         {
+            _width = width;
+            
             for (int i = 0; i < width; i++)
             {
                 BoardSquareState squareState = GetSquareState(random);
@@ -33,8 +36,8 @@ namespace BattleshipBrain
             var cell = new BoardSquareState();
             if (random)
             {
-                cell.IsBomb = _random.Next(0, 2) == 0;
-                cell.IsShip = _random.Next(0, 2) == 0;
+                // cell.IsBomb = _random.Next(0, 4) == 0;
+                cell.IsShip = _random.Next(0, _width) == 0;
             }
             else
             {

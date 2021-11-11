@@ -27,7 +27,7 @@ namespace WebApp.Pages.Games
         {
             Player = _context.Players.FirstOrDefault(x => x.Id == playerId)!;
             Game game = _context.Games.FirstOrDefault(x => x.Id == Player.GameId)!;
-            if (!game.HasStarted)
+            if (game.StartDate == null)
             {
                 Board = JsonSerializer.Deserialize<Board>(Player.Board!)!;
                 return Page();
@@ -36,22 +36,32 @@ namespace WebApp.Pages.Games
         }
 
         [BindProperty] public List<string>? Ships { get; set;  }
-        [BindProperty] public string? TestCheckbox { get; set; }
+        [BindProperty] public bool CreateRandomBoard { get; set; }
         [BindProperty] public int? PlayerId { get; set; }
 
         public async Task<IActionResult> OnPost()
         {
-            Console.WriteLine($"Test: {TestCheckbox}");
+            Console.WriteLine($"CreateRandomBoard: {CreateRandomBoard}");
             Console.WriteLine($"Count: {Ships!.Count}.  {string.Join(", ", Ships)}");
             Console.WriteLine($"Player id: {PlayerId}");
+            
+            Player = await _context
+                .Players
+                .Include(x => x.Game)
+                .FirstOrDefaultAsync(x => x.Id == PlayerId)!;
 
-            if (Ships.Count != 0)
+
+            if (CreateRandomBoard)
             {
-                Player = await _context
-                    .Players
-                    .Include(x => x.Game)
-                    .FirstOrDefaultAsync(x => x.Id == PlayerId)!;
-                
+                Config conf = new (Player.Game!.BoardSize, Player.Game!.BoardSize, CreateRandomBoard);
+                Board = new Board(conf);
+                Player.Board = JsonSerializer.Serialize(Board);
+                await _context.SaveChangesAsync();
+                return Page();
+            }
+            
+            if (Ships.Count == 15) // correct number of ships
+            {
                 Config conf = new (Player.Game!.BoardSize, Player.Game!.BoardSize);
                 Board = new Board(conf);
 
@@ -66,6 +76,23 @@ namespace WebApp.Pages.Games
 
                 Player.Board = JsonSerializer.Serialize(Board);
                 await _context.SaveChangesAsync();
+            } 
+            else 
+            {
+                Config conf = new (Player.Game!.BoardSize, Player.Game!.BoardSize);
+                Board = new Board(conf);
+
+                foreach (var ship in Ships)
+                {
+                    var coords = ship.Split("-");
+                    int x = Int32.Parse(coords[0]);
+                    int y = Int32.Parse(coords[1]);
+
+                    Board.PlaceShip(x, y);
+                }
+
+                Player.Board = JsonSerializer.Serialize(Board);
+                return Page();
             }
             
             return RedirectToPage("./Index");

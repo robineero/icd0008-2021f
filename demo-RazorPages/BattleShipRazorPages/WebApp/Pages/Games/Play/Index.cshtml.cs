@@ -31,7 +31,7 @@ namespace WebApp.Pages.Games.Play
             {
                 List<Player> player = _context.Players.Where(p => p.GameId == gameId).ToList();
                 Game game = _context.Games.FirstOrDefault(g => g.Id == gameId)!;
-                game.HasStarted = true;
+                game.StartDate = DateTime.Now;
                 game.UpdatedAt = DateTime.Now;
                 //
                 Player current = player.FirstOrDefault(nm => nm.NextMove)!;

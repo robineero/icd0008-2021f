@@ -14,8 +14,11 @@ dotnet ef database --project DAL --startup-project WebApp update
 ## TODO
 
 - [x] Setup done boolean (so setup can be done only once or until first move is done)
-- [ ] Game over if no ships on the board (after starting play)
+- [ ] Game over if no ships on left the board (after starting play and having ships initially)
+- [ ] Count ships during setup and return if not enough
+- [ ] Place some ships during board generation
 
 ## Extra
 
 - [x] Setup postgres and make this app work with postgres
+- [ ] Random board generation

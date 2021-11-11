@@ -22,11 +22,13 @@
     
     <p>This your board, where you place your ships. Your opponent will play on it (without seeing your ships).</p>
 
+    <p>Number of ship type squares: @Model.Board.ShipCount() / 15 needed</p>
+    
     <form method="post">
         
         <div class="row">
             <div class="col">
-                Test checkbox: <input class="form-check-input" name="TestCheckbox" id="xx" type="checkbox" value="true" checked="checked">
+                <label for="CreateRandomBoard"><input class="form-check-input" name="CreateRandomBoard" id="CreateRandomBoard" type="checkbox" value="true">Random board</label>
             </div>
         </div>
         
