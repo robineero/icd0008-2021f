@@ -9,6 +9,8 @@ dotnet ef database --project DAL --startup-project WebApp update
 
 ~~~
 
+ASPNETCORE_ENVIRONMENT=DevelopmentSchool dotnet ef database --project DAL --startup-project WebApp drop -f
+
 @(coord.BoardSquareState.IsShip ? "checked" : "")
 
 ## TODO
