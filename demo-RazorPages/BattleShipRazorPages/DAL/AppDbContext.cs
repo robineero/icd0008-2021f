@@ -2,22 +2,24 @@
 using System.Linq;
 using Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace DAL
 {
     public class AppDbContext : DbContext
     {
-        private const string Db = "hw05-razor";
-        private static readonly string MssqlConnectionString = $"Server=vps.that.ee,1433;User Id=sa;Password=Robert.xnjj.1;Database={Db};MultipleActiveResultSets=true";
-        private static readonly string PostgresqlConnectionString = $"Server=vps.that.ee;Port=5432;Database={Db};User Id=razor;Password=2q5t;";
         public DbSet<Game> Games { get; set; } = default!;
         public DbSet<Player> Players { get; set; } = default!;
+        public IConfiguration Configuration { get; }
 
-        // not recommended - do not hardcode DB conf!
+        public AppDbContext(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // optionsBuilder.UseSqlServer(MssqlConnectionString);
-            optionsBuilder.UseNpgsql(PostgresqlConnectionString);
+            var connectionString = Configuration.GetConnectionString("PostgreSQL");
+            optionsBuilder.UseNpgsql(connectionString);
         }
         
         protected override void OnModelCreating(ModelBuilder builder)

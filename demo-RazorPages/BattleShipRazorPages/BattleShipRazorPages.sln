@@ -7,6 +7,7 @@ ProjectSection(SolutionItems) = preProject
 	Directory.Build.props = Directory.Build.props
 	readme.md = readme.md
 	db-update.sh = db-update.sh
+	..\..\.gitignore = ..\..\.gitignore
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{315455A2-5BC5-4A2B-969D-678BC27D8C5C}"

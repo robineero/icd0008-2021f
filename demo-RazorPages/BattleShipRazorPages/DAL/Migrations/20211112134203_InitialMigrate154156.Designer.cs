@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20211111212829_InitialMigrate232823")]
-    partial class InitialMigrate232823
+    [Migration("20211112134203_InitialMigrate154156")]
+    partial class InitialMigrate154156
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
