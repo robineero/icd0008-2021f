@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace BattleshipBrain
 {
@@ -8,35 +9,70 @@ namespace BattleshipBrain
         public int Width { get; set; }
         public int Height { get; set; }
         
+        private readonly Random _random = new();
+        
         public Board()
         {
         }
 
         public Board(Config conf)
         {
-            do
+            Width = conf.Width;
+            Height = conf.Height;
+            BoardRows(conf);
+        }
+
+        private void BoardRows(Config config)
+        {
+            var bss = new BoardSquareState();
+            
+            for (int y = 0; y < config.Height; y++)
             {
-                Rows = new();
-                Width = conf.Width;
-                Height = conf.Height;
-
-                for (int i = 0; i < conf.Height; i++)
+                Row row = new();
+                for (int x = 0; x < config.Width; x++)
                 {
-                    if (ShipCount() < 15)
+                    bss.IsShip = false;
+                    Coordinate coordinate = new Coordinate()
                     {
-                        Row row = new(i, conf.Width, conf.Random);
-                        Rows.Add(row);
-                    }
-                    else
-                    {
-                        Row row = new(i, conf.Width);
-                        Rows.Add(row);
-                    }
+                        X = x,
+                        Y = y,
+                        BoardSquareState = bss
+                    };
+                    row.Coordinates.Add(coordinate);
                 }
+                Rows.Add(row);
+            }
+            
+            if (config.Random)
+            {
+                PlaceRandomCoords();
+            }
+        }
 
-                if (!conf.Random) break;
-                
-            } while (ShipCount() != 15);
+        private void PlaceRandomCoords()
+        {
+            var randomCoords = new List<Coordinate>();
+            var bss = new BoardSquareState();
+            for (int i = 0; i < 15;)
+            {
+                bss.IsShip = true;
+                Coordinate coordinate = new Coordinate()
+                {
+                    X = _random.Next(0, Width),
+                    Y = _random.Next(0, Height),
+                    BoardSquareState = bss
+                };
+                if (!randomCoords.Contains(coordinate))
+                {
+                    randomCoords.Add(coordinate);
+                    i++;
+                }
+            }
+
+            foreach (var crd in randomCoords)
+            {
+                Rows[crd.Y].Coordinates[crd.X] = crd;
+            }
         }
 
         public int ShipCount()
