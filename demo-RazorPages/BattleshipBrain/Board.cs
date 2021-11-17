@@ -24,32 +24,36 @@ namespace BattleshipBrain
 
         private void BoardRows(Config config)
         {
-            var bss = new BoardSquareState();
-            
+            // Create empty board
             for (int y = 0; y < config.Height; y++)
             {
                 Row row = new();
                 for (int x = 0; x < config.Width; x++)
                 {
-                    bss.IsShip = false;
                     Coordinate coordinate = new Coordinate()
                     {
                         X = x,
                         Y = y,
-                        BoardSquareState = bss
+                        BoardSquareState = new BoardSquareState()
                     };
                     row.Coordinates.Add(coordinate);
                 }
                 Rows.Add(row);
             }
             
+            // Place carrier
+            foreach (var crd in PlaceShip(5))
+            {
+                Rows[crd.Y].Coordinates[crd.X] = crd;
+            }
+            
             if (config.Random)
             {
-                PlaceRandomCoords();
+                PlaceRandomShips();
             }
         }
 
-        private void PlaceRandomCoords()
+        private void PlaceRandomShips()
         {
             var randomCoords = new List<Coordinate>();
             var bss = new BoardSquareState();
@@ -62,6 +66,7 @@ namespace BattleshipBrain
                     Y = _random.Next(0, Height),
                     BoardSquareState = bss
                 };
+                
                 if (!randomCoords.Contains(coordinate))
                 {
                     randomCoords.Add(coordinate);
@@ -74,6 +79,40 @@ namespace BattleshipBrain
                 Rows[crd.Y].Coordinates[crd.X] = crd;
             }
         }
+        
+        public List<Coordinate> PlaceShip(int lenght)
+        {
+            // Direction direction = (Direction) (Enum.GetValues(typeof(Direction)).GetValue(_random.Next(0, 2)) ?? Direction.Ns);
+            var dir = _random.Next(0, 2);
+            bool ns = dir == 0;
+            bool ew = dir == 1;
+            
+            List<Coordinate> ship = new();
+            var shipLenght = lenght;
+            
+            var startX = _random.Next(0, ew ? Height - shipLenght : Height);
+            var startY = _random.Next(0, ns ? Width - shipLenght : Width);
+            
+            var bss = new BoardSquareState
+            {
+                IsShip = true
+            };
+            
+            for (int i = 0; i < shipLenght; i++)
+            {
+                ship.Add(
+                    new Coordinate()
+                    {
+                        X = ew ? startX + i : startX,
+                        Y = ns ? startY + i : startY,
+                        BoardSquareState = bss
+                    }
+                    );
+            }
+
+            return ship;
+        }
+        
 
         public int ShipCount()
         {
