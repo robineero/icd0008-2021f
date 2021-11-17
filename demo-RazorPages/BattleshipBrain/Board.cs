@@ -41,12 +41,6 @@ namespace BattleshipBrain
                 Rows.Add(row);
             }
             
-            // Place carrier
-            foreach (var crd in PlaceShip(5))
-            {
-                Rows[crd.Y].Coordinates[crd.X] = crd;
-            }
-            
             if (config.Random)
             {
                 PlaceRandomShips();
@@ -56,23 +50,43 @@ namespace BattleshipBrain
         private void PlaceRandomShips()
         {
             var randomCoords = new List<Coordinate>();
-            var bss = new BoardSquareState();
-            for (int i = 0; i < 15;)
+            var forbiddenCoords = new List<Coordinate>();
+
+            for (int i = 5; i > 0;)
             {
-                bss.IsShip = true;
-                Coordinate coordinate = new Coordinate()
-                {
-                    X = _random.Next(0, Width),
-                    Y = _random.Next(0, Height),
-                    BoardSquareState = bss
-                };
+                var ship = PlaceShip(i);
+                bool ok = true;
+                foreach (var coordinate in ship)
+                    if (forbiddenCoords.Contains(coordinate)) ok = false;
                 
-                if (!randomCoords.Contains(coordinate))
+                if (ok)
                 {
-                    randomCoords.Add(coordinate);
-                    i++;
+                    foreach (var coordinate in ship)
+                    {
+                        randomCoords.Add(coordinate);
+                        forbiddenCoords.Add(coordinate);
+                    }
+                    i--;
                 }
             }
+            
+            // var bss = new BoardSquareState();
+            // while (true)
+            // {
+            //     bss.IsShip = true;
+            //     Coordinate coordinate = new Coordinate()
+            //     {
+            //         X = _random.Next(0, Width),
+            //         Y = _random.Next(0, Height),
+            //         BoardSquareState = bss
+            //     };
+            //     
+            //     if (!randomCoords.Contains(coordinate))
+            //     {
+            //         randomCoords.Add(coordinate);
+            //         if (randomCoords.Count == 15) break;
+            //     }
+            // }
 
             foreach (var crd in randomCoords)
             {

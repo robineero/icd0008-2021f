@@ -29,20 +29,37 @@ namespace WebApp.Pages.Games.Play
         {
             if (move)
             {
-                List<Player> player = _context.Players.Where(p => p.GameId == gameId).ToList();
+                // Load players
+                List<Player> players = _context.Players.Where(p => p.GameId == gameId).ToList();
+                Player current = players.FirstOrDefault(nm => nm.NextMove)!;
+                Player opponent = players.FirstOrDefault(nm => !nm.NextMove)!;
+                
+                // Get the game, update dates
                 Game game = _context.Games.FirstOrDefault(g => g.Id == gameId)!;
                 game.StartDate = DateTime.Now;
                 game.UpdatedAt = DateTime.Now;
-                //
-                Player current = player.FirstOrDefault(nm => nm.NextMove)!;
-                Player next = player.FirstOrDefault(nm => !nm.NextMove)!;
-                PlayerCurrent = current;
-                current.NextMove = !current.NextMove;
-                next.NextMove = !next.NextMove;
-                //
-                Board = JsonSerializer.Deserialize<Board>(next.Board!)!;
+                
+                // Check if cell already has bomb
+                Board opponentsBoard = JsonSerializer.Deserialize<Board>(opponent.Board!)!;
+                var bss = opponentsBoard.Rows[y].Coordinates[x].BoardSquareState;
+                if (bss.IsBomb)
+                {
+                    PlayerCurrent = current;
+                    PlayerOpponent = opponent;
+                    return Page();
+                }
+                
+                // Switch players if is not hit
+                if (!bss.IsShip) 
+                {
+                    current.NextMove = !current.NextMove;
+                    opponent.NextMove = !opponent.NextMove;
+                }
+                
+                //opponentsBoard.PlaceBomb(x, y);
+                Board = JsonSerializer.Deserialize<Board>(opponent.Board!)!;
                 Board.PlaceBomb(x, y);
-                next.Board = JsonSerializer.Serialize(Board);
+                opponent.Board = JsonSerializer.Serialize(Board);
                 await _context.SaveChangesAsync();
                 
                 return RedirectToPage("/Games/Index");
